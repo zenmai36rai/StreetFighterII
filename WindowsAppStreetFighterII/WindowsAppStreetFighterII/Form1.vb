@@ -1,4 +1,6 @@
-﻿Public Class Form1
+﻿Imports System.Data.SqlTypes
+
+Public Class Form1
     Dim Time As Integer = 99
     Dim Life As Integer = 100
     Dim Life2 As Integer = 100
@@ -11,10 +13,18 @@
     Dim jump_vy As Double = 0
     Dim gravity As Double = 0.5
     Dim jump_time = 0
+    Dim sonic_x As Integer = 1000
     Dim state As Integer = 0
+    Dim next_state As Integer = 0
+    Dim state_time As Integer = 0
+    Dim tech_flag As Integer = 0
+    Dim tech_time As Integer = 0
     Dim img_0 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風立ち.png")
     Dim img_1 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風パンチ.png")
     Dim img_2 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風ムエタイキック.png")
+    Dim img_3 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風構え.png")
+    Dim img_4 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風ソニックブーム.png")
+    Dim img_sonic As Image = Image.FromFile("..\..\アニメ素材\ソニックブーム.png")
     Dim img_back As Image = Image.FromFile("..\..\アニメ素材\背景.png")
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         frame = frame + 1
@@ -25,13 +35,26 @@
         Dim canvas As New Bitmap(PictureBox1.Width, PictureBox1.Height)
         Dim g As Graphics = Graphics.FromImage(canvas)
         g.DrawImage(img_back, 0, 0, canvas.Width, canvas.Height)
+        ProgressFrame()
         Dim img As Image
         If (state = 1) Then
             img = img_1
+            SetNextFrame(0, 12)
         ElseIf (state = 2) Then
             img = img_2
+            SetNextFrame(0, 12)
+        ElseIf (state = 3) Then
+            img = img_3
+            SetNextFrame(4, 6)
+        ElseIf (state = 4) Then
+            img = img_4
+            If tech_flag = 0 Then
+                sonic_x = 0
+            End If
+            SetNextFrame(0, 36)
         Else
             img = img_0
+            tech_flag = 0
         End If
         If jump = 1 Then
             jump_time = jump_time + 1
@@ -52,6 +75,10 @@
         End If
         DrawTime(g)
         g.DrawImage(img, 20 + cx, 220 - cy, 200, 200)
+        If sonic_x <= canvas.Width Then
+            g.DrawImage(img_sonic, 20 + cx + sonic_x, 220, 200, 200)
+            sonic_x = sonic_x + 5
+        End If
         g.Dispose()
         PictureBox1.Image = canvas
     End Sub
@@ -69,6 +96,24 @@
         g.FillRectangle(Brushes.Red, r3)
         Dim r4 As Rectangle = New Rectangle(a - 210, 10, Life2 * 2, 30)
         g.FillRectangle(Brushes.Yellow, r4)
+    End Sub
+    Private Sub SetNextFrame(ByVal ns As Integer, ByVal st As Integer)
+        If tech_flag = 0 Then
+            next_state = ns
+            state_time = st
+            tech_flag = 1
+        End If
+    End Sub
+    Private Sub ProgressFrame()
+        If tech_flag = 0 Then
+            tech_time = 0
+        Else
+            tech_time = tech_time + 1
+            If state_time = tech_time Then
+                state = next_state
+                tech_flag = 0
+            End If
+        End If
     End Sub
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
         If jump = 0 Then
@@ -108,7 +153,7 @@
     End Sub
 
     Private Sub Button12_Click(sender As Object, e As EventArgs) Handles Button12.Click
-        state = 1
+        state = 3
     End Sub
 
     Private Sub Button13_Click(sender As Object, e As EventArgs) Handles Button13.Click
