@@ -5,6 +5,7 @@
     Dim frame As Integer = 0
     Dim cx As Integer = 0
     Dim cy As Integer = 0
+    Dim walk_vx = 0
     Dim jump As Integer = 0
     Dim jump_vx As Integer = 0
     Dim jump_vy As Double = 0
@@ -14,14 +15,7 @@
     Dim img_0 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風立ち.png")
     Dim img_1 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風パンチ.png")
     Dim img_2 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風ムエタイキック.png")
-    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
-        cx = cx - 5
-    End Sub
-
-    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
-        cx = cx + 5
-    End Sub
-
+    Dim img_back As Image = Image.FromFile("..\..\アニメ素材\背景.png")
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         frame = frame + 1
         If frame Mod 100 = 0 Then
@@ -30,6 +24,7 @@
         PictureBox1.BackColor = Color.Black
         Dim canvas As New Bitmap(PictureBox1.Width, PictureBox1.Height)
         Dim g As Graphics = Graphics.FromImage(canvas)
+        g.DrawImage(img_back, 0, 0, canvas.Width, canvas.Height)
         Dim img As Image
         If (state = 1) Then
             img = img_1
@@ -52,6 +47,8 @@
                 jump_vy = 0
                 cy = 0
             End If
+        Else
+            cx = cx + walk_vx
         End If
         DrawTime(g)
         g.DrawImage(img, 20 + cx, 220 - cy, 200, 200)
@@ -151,6 +148,18 @@
         If Life2 > 100 Then
             Life2 = 100
         End If
+    End Sub
 
+    Private Sub Button6_MouseDown(sender As Object, e As MouseEventArgs) Handles Button6.MouseDown
+        walk_vx = 5
+    End Sub
+    Private Sub Button4_MouseDown(sender As Object, e As MouseEventArgs) Handles Button4.MouseDown
+        walk_vx = -5
+    End Sub
+    Private Sub Button6_MouseUp(sender As Object, e As MouseEventArgs) Handles Button6.MouseUp
+        walk_vx = 0
+    End Sub
+    Private Sub Button4_MouseUp(sender As Object, e As MouseEventArgs) Handles Button4.MouseUp
+        walk_vx = 0
     End Sub
 End Class
