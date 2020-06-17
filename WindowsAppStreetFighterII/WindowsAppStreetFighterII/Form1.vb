@@ -19,6 +19,8 @@ Public Class Form1
     Dim state_time As Integer = 0
     Dim tech_flag As Integer = 0
     Dim tech_time As Integer = 0
+    Dim ryu_state = 1
+    Dim hadou_x = 1000
     Dim img_0 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風立ち.png")
     Dim img_1 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風パンチ.png")
     Dim img_2 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風ムエタイキック.png")
@@ -26,6 +28,9 @@ Public Class Form1
     Dim img_4 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風ソニックブーム.png")
     Dim img_sonic As Image = Image.FromFile("..\..\アニメ素材\ソニックブーム.png")
     Dim img_r1 As Image = Image.FromFile("..\..\アニメ素材\リュウ立ち.png")
+    Dim img_r2 As Image = Image.FromFile("..\..\アニメ素材\リュウ構え.png")
+    Dim img_r3 As Image = Image.FromFile("..\..\アニメ素材\リュウ波動拳.png")
+    Dim img_hadou As Image = Image.FromFile("..\..\アニメ素材\波動拳.png")
     Dim img_back As Image = Image.FromFile("..\..\アニメ素材\背景.png")
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         frame = frame + 1
@@ -80,8 +85,21 @@ Public Class Form1
             g.DrawImage(img_sonic, 20 + cx + sonic_x, 220, 200, 200)
             sonic_x = sonic_x + 5
         End If
-        g.DrawImage(img_r1, 400, 220, 200, 200)
-        g.Dispose()
+        If (ryu_state = 1) Then
+            img = img_r1
+        ElseIf ryu_state = 2 Then
+            img = img_r2
+        ElseIf ryu_state = 3 Then
+            img = img_r3
+        End If
+        g.DrawImage(img, 400, 220, 200, 200)
+
+
+        If hadou_x <= canvas.Width Then
+                g.DrawImage(img_hadou, 360 + hadou_x, 220, 200, 200)
+                hadou_x = hadou_x - 5
+            End If
+            g.Dispose()
         PictureBox1.Image = canvas
     End Sub
     Private Sub DrawTime(ByRef g As Graphics)
@@ -208,5 +226,15 @@ Public Class Form1
     End Sub
     Private Sub Button4_MouseUp(sender As Object, e As MouseEventArgs) Handles Button4.MouseUp
         walk_vx = 0
+    End Sub
+
+    Private Sub Button21_Click(sender As Object, e As EventArgs) Handles Button21.Click
+        ryu_state = ryu_state + 1
+        If ryu_state = 3 Then
+            hadou_x = 0
+        End If
+        If ryu_state = 4 Then
+            ryu_state = 1
+        End If
     End Sub
 End Class

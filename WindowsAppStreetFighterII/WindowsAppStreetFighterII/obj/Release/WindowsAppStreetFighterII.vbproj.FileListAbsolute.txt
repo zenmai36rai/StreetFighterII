@@ -1,0 +1,12 @@
+C:\Users\宮澤 郷介\source\repos\WindowsAppStreetFighterII\WindowsAppStreetFighterII\bin\Release\WindowsAppStreetFighterII.exe.config
+C:\Users\宮澤 郷介\source\repos\WindowsAppStreetFighterII\WindowsAppStreetFighterII\bin\Release\WindowsAppStreetFighterII.exe
+C:\Users\宮澤 郷介\source\repos\WindowsAppStreetFighterII\WindowsAppStreetFighterII\bin\Release\WindowsAppStreetFighterII.pdb
+C:\Users\宮澤 郷介\source\repos\WindowsAppStreetFighterII\WindowsAppStreetFighterII\bin\Release\WindowsAppStreetFighterII.xml
+C:\Users\宮澤 郷介\source\repos\WindowsAppStreetFighterII\WindowsAppStreetFighterII\obj\Release\WindowsAppStreetFighterII.vbprojAssemblyReference.cache
+C:\Users\宮澤 郷介\source\repos\WindowsAppStreetFighterII\WindowsAppStreetFighterII\obj\Release\WindowsAppStreetFighterII.Form1.resources
+C:\Users\宮澤 郷介\source\repos\WindowsAppStreetFighterII\WindowsAppStreetFighterII\obj\Release\WindowsAppStreetFighterII.Resources.resources
+C:\Users\宮澤 郷介\source\repos\WindowsAppStreetFighterII\WindowsAppStreetFighterII\obj\Release\WindowsAppStreetFighterII.vbproj.GenerateResource.cache
+C:\Users\宮澤 郷介\source\repos\WindowsAppStreetFighterII\WindowsAppStreetFighterII\obj\Release\WindowsAppStreetFighterII.vbproj.CoreCompileInputs.cache
+C:\Users\宮澤 郷介\source\repos\WindowsAppStreetFighterII\WindowsAppStreetFighterII\obj\Release\WindowsAppStreetFighterII.exe
+C:\Users\宮澤 郷介\source\repos\WindowsAppStreetFighterII\WindowsAppStreetFighterII\obj\Release\WindowsAppStreetFighterII.xml
+C:\Users\宮澤 郷介\source\repos\WindowsAppStreetFighterII\WindowsAppStreetFighterII\obj\Release\WindowsAppStreetFighterII.pdb
