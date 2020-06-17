@@ -25,6 +25,7 @@ Public Class Form1
     Dim img_3 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風構え.png")
     Dim img_4 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風ソニックブーム.png")
     Dim img_sonic As Image = Image.FromFile("..\..\アニメ素材\ソニックブーム.png")
+    Dim img_r1 As Image = Image.FromFile("..\..\アニメ素材\リュウ立ち.png")
     Dim img_back As Image = Image.FromFile("..\..\アニメ素材\背景.png")
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         frame = frame + 1
@@ -79,6 +80,7 @@ Public Class Form1
             g.DrawImage(img_sonic, 20 + cx + sonic_x, 220, 200, 200)
             sonic_x = sonic_x + 5
         End If
+        g.DrawImage(img_r1, 400, 220, 200, 200)
         g.Dispose()
         PictureBox1.Image = canvas
     End Sub

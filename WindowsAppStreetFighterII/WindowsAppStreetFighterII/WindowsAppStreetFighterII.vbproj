@@ -145,6 +145,7 @@
     <Content Include="アニメ素材\ガイル絵本風ソニックブーム.png" />
     <Content Include="アニメ素材\ガイル絵本風構え.png" />
     <Content Include="アニメ素材\ソニックブーム.png" />
+    <Content Include="アニメ素材\リュウ立ち.png" />
     <Content Include="アニメ素材\背景.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
