@@ -92,7 +92,47 @@ Public Class Form1
             img = img_r3
         End If
         If c2.cy > 0 Then
-            g.DrawImage(img_r4, 400 + c2.cx, 220 - c2.cy, 200, 200)
+            Dim center_x As Integer = 400 + c2.cx + 100
+            Dim center_y As Integer = 220 - c2.cy + 100
+            Dim dp() As Point = New Point() {New Point(center_x - 100, center_y - 100),
+                New Point(center_x + 100, center_y - 100),
+                New Point(center_x - 100, center_y + 100)}
+            If c2.jump_vx < 0 Then
+                If c2.jump_time < 15 Then
+                ElseIf c2.jump_time < 20 Then
+                    dp(0) = New Point(center_x - 100, center_y + 100)
+                    dp(1) = New Point(center_x - 100, center_y - 100)
+                    dp(2) = New Point(center_x + 100, center_y + 100)
+                ElseIf c2.jump_time < 25 Then
+                    dp(0) = New Point(center_x + 100, center_y + 100)
+                    dp(1) = New Point(center_x - 100, center_y + 100)
+                    dp(2) = New Point(center_x + 100, center_y - 100)
+                ElseIf c2.jump_time < 30 Then
+                    dp(0) = New Point(center_x + 100, center_y - 100)
+                    dp(1) = New Point(center_x + 100, center_y + 100)
+                    dp(2) = New Point(center_x - 100, center_y - 100)
+                End If
+                g.DrawImage(img_r4, dp)
+            ElseIf c2.jump_vx > 0 Then
+
+                If c2.jump_time < 9 Then
+                ElseIf c2.jump_time < 18 Then
+                    dp(0) = New Point(center_x + 100, center_y - 100)
+                    dp(1) = New Point(center_x + 100, center_y + 100)
+                    dp(2) = New Point(center_x - 100, center_y - 100)
+                ElseIf c2.jump_time < 27 Then
+                    dp(0) = New Point(center_x + 100, center_y + 100)
+                    dp(1) = New Point(center_x - 100, center_y + 100)
+                    dp(2) = New Point(center_x + 100, center_y - 100)
+                ElseIf c2.jump_time < 36 Then
+                    dp(0) = New Point(center_x - 100, center_y + 100)
+                    dp(1) = New Point(center_x - 100, center_y - 100)
+                    dp(2) = New Point(center_x + 100, center_y + 100)
+                End If
+                g.DrawImage(img_r4, dp)
+            Else
+                g.DrawImage(img_r4, 400 + c2.cx, 220 - c2.cy, 200, 200)
+            End If
         Else
             g.DrawImage(img, 400 + c2.cx, 220 - c2.cy, 200, 200)
         End If
