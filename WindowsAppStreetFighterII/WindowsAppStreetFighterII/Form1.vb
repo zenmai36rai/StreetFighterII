@@ -51,7 +51,7 @@ Public Class Form1
             SetNextFrame(0, 12)
         ElseIf (state = 3) Then
             img = img_3
-            SetNextFrame(4, 6)
+            SetNextFrame(4, 12)
         ElseIf (state = 4) Then
             img = img_4
             If tech_flag = 0 Then
