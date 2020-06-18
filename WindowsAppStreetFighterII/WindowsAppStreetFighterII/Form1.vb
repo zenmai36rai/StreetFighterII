@@ -45,13 +45,13 @@ Public Class Form1
         Dim img As Image
         If (state = 1) Then
             img = img_1
-            SetNextFrame(0, 12)
+            SetNextFrame(0, 9)
         ElseIf (state = 2) Then
             img = img_2
-            SetNextFrame(0, 12)
+            SetNextFrame(0, 14)
         ElseIf (state = 3) Then
             img = img_3
-            SetNextFrame(4, 12)
+            SetNextFrame(4, 10)
         ElseIf (state = 4) Then
             img = img_4
             If tech_flag = 0 Then
