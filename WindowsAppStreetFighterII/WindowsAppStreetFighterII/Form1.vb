@@ -38,6 +38,7 @@ Public Class Form1
     Dim img_r3 As Image = Image.FromFile("..\..\アニメ素材\リュウ波動拳.png")
     Dim img_hadou As Image = Image.FromFile("..\..\アニメ素材\波動拳.png")
     Dim img_back As Image = Image.FromFile("..\..\アニメ素材\背景.png")
+    Dim ryu_bmp As Bitmap = New Bitmap("..\..\アニメ素材\リュウ立ち.png")
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         frame = frame + 1
         If frame Mod 100 = 0 Then
@@ -71,7 +72,18 @@ Public Class Form1
         DrawTime(g)
         JumpCalc(c1)
         JumpCalc(c2)
-        g.DrawImage(img, 20 + c1.cx, 220 - c1.cy, 200, 200)
+        If c1.cy > 0 And c1.jump_vx <> 0 Then
+            Dim cal As Double = c1.jump_time * 3.14 / 19
+            Dim center_x = 20 + c1.cx + 100
+            Dim center_y = 220 - c1.cy + 100
+            Dim dp() As Point
+            dp = New Point() {New Point(center_x - 100, center_y - 100 * Math.Cos(cal)),
+                             New Point(center_x + 100, center_y - 100 * Math.Cos(cal)),
+                             New Point(center_x - 100, center_y + 100 * Math.Cos(cal))}
+            g.DrawImage(img, dp)
+        Else
+            g.DrawImage(img, 20 + c1.cx, 220 - c1.cy, 200, 200)
+        End If
         If c1.sonic_x <= canvas.Width Then
             If c1.sonic_x Mod 50 = 0 Then
                 c1.sonic_r = c1.sonic_r + 1
@@ -90,8 +102,18 @@ Public Class Form1
         ElseIf ryu_state = 3 Then
             img = img_r3
         End If
-        g.DrawImage(img, 400 + c2.cx, 220 - c2.cy, 200, 200)
-
+        If c2.cy > 0 And c2.jump_vx <> 0 Then
+            Dim pm = 1
+            If c2.jump_vx < 0 Then
+                pm = -1
+            End If
+            Dim cal As Double = c2.jump_time * 360 / 38 * pm
+            Dim bmp2 As Bitmap = RotateMove(ryu_bmp, cal, 200, 200)
+            Dim img_rot As Image = Image.FromHbitmap(bmp2.GetHbitmap)
+            g.DrawImage(img_rot, 400 + c2.cx, 220 - c2.cy, 200, 200)
+        Else
+            g.DrawImage(img, 400 + c2.cx, 220 - c2.cy, 200, 200)
+        End If
 
         If hadou_x <= canvas.Width Then
             g.DrawImage(img_hadou, 360 + c2.cx + hadou_x, 220, 200, 200)
@@ -100,6 +122,20 @@ Public Class Form1
         g.Dispose()
         PictureBox1.Image = canvas
     End Sub
+    Private Function RotateMove(ByRef bmp As Bitmap, ByVal angle As Double, ByVal x As Integer, ByVal y As Integer) As Bitmap
+        Dim bmp2 As Bitmap = New Bitmap(bmp.Width, bmp.Height)
+        Dim g As Graphics = Graphics.FromImage(bmp2)
+        g.Clear(Color.Blue)
+
+        g.TranslateTransform(-x, -y)
+        g.RotateTransform(angle, System.Drawing.Drawing2D.MatrixOrder.Append)
+        g.TranslateTransform(x, y, System.Drawing.Drawing2D.MatrixOrder.Append)
+        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear
+        g.DrawImageUnscaled(bmp, 0, 0)
+        g.Dispose()
+        bmp2.MakeTransparent(Color.Blue)
+        Return bmp2
+    End Function
     Private Sub JumpCalc(ByRef c As clMove)
         If c.jump = 1 Then
             c.jump_time = c.jump_time + 1
