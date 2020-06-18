@@ -94,41 +94,22 @@ Public Class Form1
         If c2.cy > 0 Then
             Dim center_x As Integer = 400 + c2.cx + 100
             Dim center_y As Integer = 220 - c2.cy + 100
-            Dim dp() As Point = New Point() {New Point(center_x - 100, center_y - 100),
-                New Point(center_x + 100, center_y - 100),
-                New Point(center_x - 100, center_y + 100)}
+            Dim r As Double = 100 * Math.Sqrt(2)
             If c2.jump_vx < 0 Then
-                If c2.jump_time < 15 Then
-                ElseIf c2.jump_time < 20 Then
-                    dp(0) = New Point(center_x - 100, center_y + 100)
-                    dp(1) = New Point(center_x - 100, center_y - 100)
-                    dp(2) = New Point(center_x + 100, center_y + 100)
-                ElseIf c2.jump_time < 25 Then
-                    dp(0) = New Point(center_x + 100, center_y + 100)
-                    dp(1) = New Point(center_x - 100, center_y + 100)
-                    dp(2) = New Point(center_x + 100, center_y - 100)
-                ElseIf c2.jump_time < 30 Then
-                    dp(0) = New Point(center_x + 100, center_y - 100)
-                    dp(1) = New Point(center_x + 100, center_y + 100)
-                    dp(2) = New Point(center_x - 100, center_y - 100)
-                End If
+                Dim angle1 As Double = (135 + c2.jump_time / 19 * 360) * 3.14 / 180
+                Dim angle2 As Double = (45 + c2.jump_time / 19 * 360) * 3.14 / 180
+                Dim angle3 As Double = (225 + c2.jump_time / 19 * 360) * 3.14 / 180
+                Dim dp() As Point = New Point() {New Point(center_x + r * Math.Sin(angle1), center_y + r * Math.Cos(angle1)),
+                New Point(center_x + r * Math.Sin(angle2), center_y + r * Math.Cos(angle2)),
+                New Point(center_x + r * Math.Sin(angle3), center_y + r * Math.Cos(angle3))}
                 g.DrawImage(img_r4, dp)
             ElseIf c2.jump_vx > 0 Then
-
-                If c2.jump_time < 9 Then
-                ElseIf c2.jump_time < 18 Then
-                    dp(0) = New Point(center_x + 100, center_y - 100)
-                    dp(1) = New Point(center_x + 100, center_y + 100)
-                    dp(2) = New Point(center_x - 100, center_y - 100)
-                ElseIf c2.jump_time < 27 Then
-                    dp(0) = New Point(center_x + 100, center_y + 100)
-                    dp(1) = New Point(center_x - 100, center_y + 100)
-                    dp(2) = New Point(center_x + 100, center_y - 100)
-                ElseIf c2.jump_time < 36 Then
-                    dp(0) = New Point(center_x - 100, center_y + 100)
-                    dp(1) = New Point(center_x - 100, center_y - 100)
-                    dp(2) = New Point(center_x + 100, center_y + 100)
-                End If
+                Dim angle1 As Double = (135 - c2.jump_time / 19 * 360) * 3.14 / 180
+                Dim angle2 As Double = (45 - c2.jump_time / 19 * 360) * 3.14 / 180
+                Dim angle3 As Double = (225 - c2.jump_time / 19 * 360) * 3.14 / 180
+                Dim dp() As Point = New Point() {New Point(center_x + r * Math.Sin(angle1), center_y + r * Math.Cos(angle1)),
+                New Point(center_x + r * Math.Sin(angle2), center_y + r * Math.Cos(angle2)),
+                New Point(center_x + r * Math.Sin(angle3), center_y + r * Math.Cos(angle3))}
                 g.DrawImage(img_r4, dp)
             Else
                 g.DrawImage(img_r4, 400 + c2.cx, 220 - c2.cy, 200, 200)
