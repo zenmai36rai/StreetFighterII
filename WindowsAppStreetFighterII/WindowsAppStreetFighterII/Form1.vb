@@ -37,6 +37,7 @@ Public Class Form1
     Dim img_r2 As Image = Image.FromFile("..\..\アニメ素材\リュウ構え.png")
     Dim img_r3 As Image = Image.FromFile("..\..\アニメ素材\リュウ波動拳.png")
     Dim img_r4 As Image = Image.FromFile("..\..\アニメ素材\リュウジャンプ.png")
+    Dim img_r5 As Image = Image.FromFile("..\..\アニメ素材\リュウ飛び蹴り.png")
     Dim img_hadou As Image = Image.FromFile("..\..\アニメ素材\波動拳.png")
     Dim img_back As Image = Image.FromFile("..\..\アニメ素材\背景.png")
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
@@ -90,12 +91,16 @@ Public Class Form1
             img = img_r2
         ElseIf ryu_state = 3 Then
             img = img_r3
+        ElseIf ryu_state = 5 Then
+            img = img_r5
         End If
         If c2.cy > 0 Then
             Dim center_x As Integer = 400 + c2.cx + 100
             Dim center_y As Integer = 220 - c2.cy + 100
             Dim r As Double = 100 * Math.Sqrt(2)
-            If c2.jump_vx < 0 Then
+            If ryu_state = 5 Then
+                g.DrawImage(img_r5, 400 + c2.cx, 220 - c2.cy, 200, 200)
+            ElseIf c2.jump_vx < 0 Then
                 Dim angle1 As Double = (135 + c2.jump_time / 19 * 360) * 3.14 / 180
                 Dim angle2 As Double = (45 + c2.jump_time / 19 * 360) * 3.14 / 180
                 Dim angle3 As Double = (225 + c2.jump_time / 19 * 360) * 3.14 / 180
@@ -125,19 +130,6 @@ Public Class Form1
         g.Dispose()
         PictureBox1.Image = canvas
     End Sub
-    Private Function RotateMove(ByRef bmp As Bitmap, ByVal angle As Double, ByVal x As Integer, ByVal y As Integer) As Bitmap
-        Dim bmp2 As Bitmap = New Bitmap(bmp.Width, bmp.Height)
-        Dim g As Graphics = Graphics.FromImage(bmp2)
-        g.Clear(Color.Blue)
-        g.TranslateTransform(-x, -y)
-        g.RotateTransform(angle, System.Drawing.Drawing2D.MatrixOrder.Append)
-        g.TranslateTransform(x, y, System.Drawing.Drawing2D.MatrixOrder.Append)
-        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear
-        g.DrawImageUnscaled(bmp, 0, 0)
-        g.Dispose()
-        bmp2.MakeTransparent(Color.Blue)
-        Return bmp2
-    End Function
     Private Sub JumpCalc(ByRef c As clMove)
         If c.jump = 1 Then
             c.jump_time = c.jump_time + 1
@@ -302,7 +294,7 @@ Public Class Form1
         If ryu_state = 3 Then
             hadou_x = 0
         End If
-        If ryu_state = 4 Then
+        If ryu_state > 3 Then
             ryu_state = 1
         End If
     End Sub
@@ -331,6 +323,17 @@ Public Class Form1
             c2.jump_time = 0
             c2.jump_vy = 0
             c2.jump_vx = 5
+        End If
+    End Sub
+
+    Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
+    End Sub
+
+    Private Sub Button30_Click(sender As Object, e As EventArgs) Handles Button30.Click
+        If ryu_state = 5 Then
+            ryu_state = 1
+        Else
+            ryu_state = 5
         End If
     End Sub
 End Class

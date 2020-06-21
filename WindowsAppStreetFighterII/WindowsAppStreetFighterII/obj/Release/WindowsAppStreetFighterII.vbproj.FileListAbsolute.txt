@@ -9,3 +9,4 @@ C:\Users\宮澤 郷介\source\repos\WindowsAppStreetFighterII\WindowsAppStreetFi
 C:\Users\宮澤 郷介\source\repos\WindowsAppStreetFighterII\WindowsAppStreetFighterII\obj\Release\WindowsAppStreetFighterII.exe
 C:\Users\宮澤 郷介\source\repos\WindowsAppStreetFighterII\WindowsAppStreetFighterII\obj\Release\WindowsAppStreetFighterII.xml
 C:\Users\宮澤 郷介\source\repos\WindowsAppStreetFighterII\WindowsAppStreetFighterII\obj\Release\WindowsAppStreetFighterII.pdb
+C:\Users\宮澤 郷介\source\repos\WindowsAppStreetFighterII\WindowsAppStreetFighterII\obj\Release\WindowsAppStreetFighterII.vbprojAssemblyReference.cache
