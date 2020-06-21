@@ -85,20 +85,20 @@ Public Class Form1
             End If
             c1.sonic_x = c1.sonic_x + 5
         End If
-        If (ryu_state = 1) Then
+        If (c2.state = 0) Then
             img = img_r1
-        ElseIf ryu_state = 2 Then
+        ElseIf c2.state = 1 Then
             img = img_r2
-        ElseIf ryu_state = 3 Then
+        ElseIf c2.state = 2 Then
             img = img_r3
-        ElseIf ryu_state = 5 Then
+        ElseIf c2.state = 5 Then
             img = img_r5
         End If
         If c2.cy > 0 Then
             Dim center_x As Integer = 400 + c2.cx + 100
             Dim center_y As Integer = 220 - c2.cy + 100
             Dim r As Double = 100 * Math.Sqrt(2)
-            If ryu_state = 5 Then
+            If c2.state = 5 Then
                 g.DrawImage(img_r5, 400 + c2.cx, 220 - c2.cy, 200, 200)
             ElseIf c2.jump_vx < 0 Then
                 Dim angle1 As Double = (135 + c2.jump_time / 19 * 360) * 3.14 / 180
@@ -143,6 +143,7 @@ Public Class Form1
                 c.jump_time = 0
                 c.jump_vx = 0
                 c.jump_vy = 0
+                c.state = 0
                 c.cy = 0
             End If
         Else
@@ -290,12 +291,12 @@ Public Class Form1
     End Sub
 
     Private Sub Button27_Click(sender As Object, e As EventArgs) Handles Button27.Click
-        ryu_state = ryu_state + 1
-        If ryu_state = 3 Then
+        c2.state = c2.state + 1
+        If c2.state = 2 Then
             hadou_x = 0
         End If
-        If ryu_state > 3 Then
-            ryu_state = 1
+        If c2.state >= 3 Then
+            c2.state = 0
         End If
     End Sub
 
@@ -330,10 +331,10 @@ Public Class Form1
     End Sub
 
     Private Sub Button30_Click(sender As Object, e As EventArgs) Handles Button30.Click
-        If ryu_state = 5 Then
-            ryu_state = 1
+        If c2.state = 5 Then
+            c2.state = 0
         Else
-            ryu_state = 5
+            c2.state = 5
         End If
     End Sub
 End Class
