@@ -135,18 +135,38 @@ Public Class Form1
             g.DrawImage(img_hadou, 360 + c2.cx + hadou_x, 220, 200, 200)
             hadou_x = hadou_x - 5
         End If
+        Dim h1 As Rectangle = New Rectangle(20 + c1.cx + c1.hitbox.X, 220 + c1.hitbox.Y, c1.hitbox.Width, c1.hitbox.Height)
+        Dim h2 As Rectangle = New Rectangle(450 + c2.cx + c2.hitbox.X, 220 + c2.hitbox.Y, c2.hitbox.Width, c2.hitbox.Height)
         If CheckBox1.Checked = True Then
-            g.DrawRectangle(Pens.Red, 20 + c1.cx + c1.hitbox.X, 220 + c1.hitbox.Y, c1.hitbox.Width, c1.hitbox.Height)
-            g.DrawRectangle(Pens.Red, 450 + c2.cx + c2.hitbox.X, 220 + c2.hitbox.Y, c2.hitbox.Width, c2.hitbox.Height)
+            g.DrawRectangle(Pens.Red, h1)
+            g.DrawRectangle(Pens.Red, h2)
         End If
+        Dim h3 As Rectangle = New Rectangle(70 + c1.cx + c1.sonic_x, 270, 100, 100)
+        Dim h4 As Rectangle = New Rectangle(410 + c2.cx + hadou_x, 270, 100, 100)
         If CheckBox1.Checked = True Then
-            g.DrawRectangle(Pens.Red, 70 + c1.cx + c1.sonic_x, 270, 100, 100)
-            g.DrawRectangle(Pens.Red, 410 + c2.cx + hadou_x, 270, 100, 100)
+            g.DrawRectangle(Pens.Red, h3)
+            g.DrawRectangle(Pens.Red, h4)
         End If
+        Dim r1 As Rectangle = New Rectangle(20 + c1.cx, 220 - c1.cy, 150, 200)
+        Dim r2 As Rectangle = New Rectangle(450 + c2.cx, 220 - c2.cy, 150, 200)
         If CheckBox2.Checked = True Then
-            g.DrawRectangle(Pens.Blue, 20 + c1.cx, 220 - c1.cy, 150, 200)
-            g.DrawRectangle(Pens.Blue, 450 + c2.cx, 220 - c2.cy, 150, 200)
+            g.DrawRectangle(Pens.Blue, r1)
+            g.DrawRectangle(Pens.Blue, r2)
         End If
+        If h1.IntersectsWith(r2) Then
+            c2.Life = c2.Life - 1
+        End If
+        If h3.IntersectsWith(r2) Then
+            c2.Life = c2.Life - 1
+        End If
+        If h2.IntersectsWith(r1) Then
+            c1.Life = c1.Life - 1
+        End If
+        If h4.IntersectsWith(r1) Then
+            c1.Life = c1.Life - 1
+        End If
+        TextBox1.Text = c1.Life
+        TextBox2.Text = c2.Life
         g.Dispose()
         PictureBox1.Image = canvas
     End Sub
