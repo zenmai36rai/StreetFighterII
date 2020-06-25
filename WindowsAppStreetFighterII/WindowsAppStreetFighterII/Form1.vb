@@ -19,6 +19,8 @@ Public Class Form1
         Public state_time As Integer = 0
         Public tech_flag As Integer = 0
         Public tech_time As Integer = 0
+        Public hitbox As Rectangle = New Rectangle(0, 0, 0, 0)
+        Public recieve As Rectangle = New Rectangle(0, 0, 0, 0)
     End Class
     Dim Time As Integer = 99
     Dim frame As Integer = 0
@@ -51,12 +53,18 @@ Public Class Form1
         g.DrawImage(img_back, 0, 0, canvas.Width, canvas.Height)
         ProgressFrame(c1)
         Dim img As Image
+        If c1.state = 0 Then
+            img = img_0
+            c1.hitbox = New Rectangle(0, 0, 0, 0)
+        End If
         If (c1.state = 1) Then
             img = img_1
             SetNextFrame(c1, 0, 9)
+            c1.hitbox = New Rectangle(100, 0, 100, 100)
         ElseIf (c1.state = 2) Then
             img = img_2
             SetNextFrame(c1, 0, 14)
+            c1.hitbox = New Rectangle(100, 100, 100, 100)
         ElseIf (c1.state = 3) Then
             img = img_3
             SetNextFrame(c1, 4, 10)
@@ -126,6 +134,18 @@ Public Class Form1
         If hadou_x <= canvas.Width Then
             g.DrawImage(img_hadou, 360 + c2.cx + hadou_x, 220, 200, 200)
             hadou_x = hadou_x - 5
+        End If
+        If CheckBox1.Checked = True Then
+            g.DrawRectangle(Pens.Red, 20 + c1.cx + c1.hitbox.X, 220 + c1.hitbox.Y, c1.hitbox.Width, c1.hitbox.Height)
+            g.DrawRectangle(Pens.Red, 450 + c2.cx + c2.hitbox.X, 220 + c2.hitbox.Y, c2.hitbox.Width, c2.hitbox.Height)
+        End If
+        If CheckBox1.Checked = True Then
+            g.DrawRectangle(Pens.Red, 70 + c1.cx + c1.sonic_x, 270, 100, 100)
+            g.DrawRectangle(Pens.Red, 410 + c2.cx + hadou_x, 270, 100, 100)
+        End If
+        If CheckBox2.Checked = True Then
+            g.DrawRectangle(Pens.Blue, 20 + c1.cx, 220 - c1.cy, 150, 200)
+            g.DrawRectangle(Pens.Blue, 450 + c2.cx, 220 - c2.cy, 150, 200)
         End If
         g.Dispose()
         PictureBox1.Image = canvas
