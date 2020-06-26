@@ -149,7 +149,7 @@ Public Class Form1
         End If
         Dim r1 As Rectangle = New Rectangle(20 + c1.cx, 220 - c1.cy, 150, 200)
         Dim r2 As Rectangle = New Rectangle(450 + c2.cx, 220 - c2.cy, 150, 200)
-        If CheckBox2.Checked = True Then
+        If CheckBox1.Checked = True Then
             g.DrawRectangle(Pens.Blue, r1)
             g.DrawRectangle(Pens.Blue, r2)
         End If

@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Form1
     Inherits System.Windows.Forms.Form
 
     'フォームがコンポーネントの一覧をクリーンアップするために dispose をオーバーライドします。
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class Form1
     'メモ: 以下のプロシージャは Windows フォーム デザイナーで必要です。
     'Windows フォーム デザイナーを使用して変更できます。  
     'コード エディターを使って変更しないでください。
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
@@ -58,7 +58,6 @@ Partial Class Form1
         Me.Button29 = New System.Windows.Forms.Button()
         Me.Button30 = New System.Windows.Forms.Button()
         Me.CheckBox1 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox2 = New System.Windows.Forms.CheckBox()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -371,22 +370,11 @@ Partial Class Form1
         Me.CheckBox1.Text = "CheckBox1"
         Me.CheckBox1.UseVisualStyleBackColor = True
         '
-        'CheckBox2
-        '
-        Me.CheckBox2.AutoSize = True
-        Me.CheckBox2.Location = New System.Drawing.Point(1, 96)
-        Me.CheckBox2.Name = "CheckBox2"
-        Me.CheckBox2.Size = New System.Drawing.Size(82, 16)
-        Me.CheckBox2.TabIndex = 34
-        Me.CheckBox2.Text = "CheckBox2"
-        Me.CheckBox2.UseVisualStyleBackColor = True
-        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
-        Me.Controls.Add(Me.CheckBox2)
         Me.Controls.Add(Me.CheckBox1)
         Me.Controls.Add(Me.Button16)
         Me.Controls.Add(Me.Button17)
@@ -464,5 +452,4 @@ Partial Class Form1
     Friend WithEvents Button29 As Button
     Friend WithEvents Button30 As Button
     Friend WithEvents CheckBox1 As CheckBox
-    Friend WithEvents CheckBox2 As CheckBox
 End Class
