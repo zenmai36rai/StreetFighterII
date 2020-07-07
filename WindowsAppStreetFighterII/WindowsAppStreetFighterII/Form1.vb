@@ -21,6 +21,10 @@ Public Class Form1
         Public tech_time As Integer = 0
         Public hitbox As Rectangle = New Rectangle(0, 0, 0, 0)
         Public recieve As Rectangle = New Rectangle(0, 0, 0, 0)
+        Public hitcheck As Integer = 0
+        Public damage As Integer = 0
+        Public firecheck As Integer = 0
+        Public firedamage As Integer = 25
     End Class
     Dim Time As Integer = 99
     Dim frame As Integer = 0
@@ -55,43 +59,46 @@ Public Class Form1
         g.DrawImage(img_back, 0, 0, canvas.Width, canvas.Height)
         ProgressFrame(c1)
         Dim img As Image
-        If c1.state = 0 Then
-            img = img_0
-            c1.hitbox = New Rectangle(0, 0, 0, 0)
-        End If
-        If (c1.state = 1) Then
-            img = img_1
-            SetNextFrame(c1, 0, 9)
-            c1.hitbox = New Rectangle(100, 0, 100, 100)
-        ElseIf (c1.state = 2) Then
-            img = img_2
-            SetNextFrame(c1, 0, 14)
-            c1.hitbox = New Rectangle(100, 100, 100, 100)
-        ElseIf (c1.state = 3) Then
-            img = img_3
-            SetNextFrame(c1, 4, 10)
-        ElseIf (c1.state = 4) Then
-            img = img_4
-            If c1.tech_flag = 0 Then
-                c1.sonic_x = 0
-            End If
-            SetNextFrame(c1, 0, 36)
-        Else
-            img = img_0
-            c1.tech_flag = 0
-        End If
+        Select Case c1.state
+            Case 0
+                img = img_0
+                c1.hitbox = New Rectangle(0, 0, 0, 0)
+            Case 1
+                img = img_1
+                SetNextFrame(c1, 0, 9)
+                c1.hitbox = New Rectangle(100, 0, 100, 100)
+                c1.damage = 9
+            Case 2
+                img = img_2
+                SetNextFrame(c1, 0, 14)
+                c1.hitbox = New Rectangle(100, 100, 100, 100)
+                c1.damage = 14
+            Case 3
+                img = img_3
+                SetNextFrame(c1, 4, 10)
+            Case 4
+                img = img_4
+                If c1.tech_flag = 0 Then
+                    c1.sonic_x = c1.cx
+                    c1.firecheck = 0
+                End If
+                SetNextFrame(c1, 0, 36)
+            Case Else
+                img = img_0
+                c1.tech_flag = 0
+        End Select
         DrawTime(g)
         JumpCalc(c1)
         JumpCalc(c2)
         g.DrawImage(img, 20 + c1.cx, 220 - c1.cy, 200, 200)
-        If c1.sonic_x <= canvas.Width Then
+        If c1.sonic_x <= canvas.Width And c1.firecheck = 0 Then
             If c1.sonic_x Mod 50 = 0 Then
                 c1.sonic_r = c1.sonic_r + 1
             End If
             If c1.sonic_r Mod 2 = 0 Then
-                g.DrawImage(img_sonic, 20 + c1.cx + c1.sonic_x, 220, 200, 200)
+                g.DrawImage(img_sonic, 20 + c1.sonic_x, 220, 200, 200)
             Else
-                g.DrawImage(img_sonic2, 20 + c1.cx + c1.sonic_x, 220, 200, 200)
+                g.DrawImage(img_sonic2, 20 + c1.sonic_x, 220, 200, 200)
             End If
             c1.sonic_x = c1.sonic_x + 5
         End If
@@ -138,8 +145,8 @@ Public Class Form1
             g.DrawImage(img, 400 + c2.cx, 220 - c2.cy, 200, 200)
         End If
 
-        If hadou_x <= canvas.Width Then
-            g.DrawImage(img_hadou, 360 + c2.cx + hadou_x, 220, 200, 200)
+        If hadou_x <= canvas.Width And c2.firecheck = 0 Then
+            g.DrawImage(img_hadou, 360 + hadou_x, 220, 200, 200)
             hadou_x = hadou_x - 5
         End If
         Dim h1 As Rectangle = New Rectangle(20 + c1.cx + c1.hitbox.X, 220 + c1.hitbox.Y, c1.hitbox.Width, c1.hitbox.Height)
@@ -154,23 +161,27 @@ Public Class Form1
             g.DrawRectangle(Pens.Red, h3)
             g.DrawRectangle(Pens.Red, h4)
         End If
-        Dim r1 As Rectangle = New Rectangle(20 + c1.cx, 220 - c1.cy, 150, 200)
-        Dim r2 As Rectangle = New Rectangle(450 + c2.cx, 220 - c2.cy, 150, 200)
+        Dim r1 As Rectangle = New Rectangle(30 + c1.cx, 220 - c1.cy, 100, 200)
+        Dim r2 As Rectangle = New Rectangle(460 + c2.cx, 220 - c2.cy, 100, 200)
         If CheckBox1.Checked = True Then
             g.DrawRectangle(Pens.Blue, r1)
             g.DrawRectangle(Pens.Blue, r2)
         End If
-        If h1.IntersectsWith(r2) Then
-            c2.Life = c2.Life - 1
+        If h1.IntersectsWith(r2) And c1.hitcheck = 0 Then
+            c2.Life = c2.Life - c1.damage
+            c1.hitcheck = 1
         End If
-        If h3.IntersectsWith(r2) Then
-            c2.Life = c2.Life - 1
+        If h3.IntersectsWith(r2) And c1.firecheck = 0 Then
+            c2.Life = c2.Life - c1.firedamage
+            c1.firecheck = 1
         End If
-        If h2.IntersectsWith(r1) Then
-            c1.Life = c1.Life - 1
+        If h2.IntersectsWith(r1) And c2.hitcheck = 0 Then
+            c1.Life = c1.Life - c2.damage
+            c2.hitcheck = 1
         End If
-        If h4.IntersectsWith(r1) Then
-            c1.Life = c1.Life - 1
+        If h4.IntersectsWith(r1) And c2.firecheck = 0 Then
+            c1.Life = c1.Life - c2.firedamage
+            c2.firecheck = 1
         End If
         TextBox1.Text = c1.Life
         TextBox2.Text = c2.Life
@@ -217,6 +228,8 @@ Public Class Form1
             c.next_state = ns
             c.state_time = st
             c.tech_flag = 1
+            c.hitcheck = 0
+            c.damage = 0
         End If
     End Sub
     Private Sub ProgressFrame(ByRef c As clMove)
@@ -340,7 +353,8 @@ Public Class Form1
     Private Sub Button27_Click(sender As Object, e As EventArgs) Handles Button27.Click
         c2.state = c2.state + 1
         If c2.state = 2 Then
-            hadou_x = 0
+            hadou_x = c2.cx
+            c2.firecheck = 0
         End If
         If c2.state >= 3 Then
             c2.state = 0
