@@ -25,6 +25,7 @@ Public Class Form1
         Public damage As Integer = 0
         Public firecheck As Integer = 0
         Public firedamage As Integer = 25
+        Public damagebuff As Integer = 0
     End Class
     Dim Time As Integer = 99
     Dim frame As Integer = 0
@@ -52,6 +53,12 @@ Public Class Form1
         frame = frame + 1
         If frame Mod 100 = 0 Then
             Time = Time - 1
+        End If
+        If c1.damagebuff > 0 Then
+            c1.damagebuff -= 1
+        End If
+        If c2.damagebuff > 0 Then
+            c2.damagebuff -= 1
         End If
         PictureBox1.BackColor = Color.Black
         Dim canvas As New Bitmap(PictureBox1.Width, PictureBox1.Height)
@@ -169,18 +176,22 @@ Public Class Form1
         End If
         If h1.IntersectsWith(r2) And c1.hitcheck = 0 Then
             c2.Life = c2.Life - c1.damage
+            c2.damagebuff += c1.damage
             c1.hitcheck = 1
         End If
         If h3.IntersectsWith(r2) And c1.firecheck = 0 Then
             c2.Life = c2.Life - c1.firedamage
+            c2.damagebuff += c1.firedamage
             c1.firecheck = 1
         End If
         If h2.IntersectsWith(r1) And c2.hitcheck = 0 Then
             c1.Life = c1.Life - c2.damage
+            c1.damagebuff += c2.damage
             c2.hitcheck = 1
         End If
         If h4.IntersectsWith(r1) And c2.firecheck = 0 Then
             c1.Life = c1.Life - c2.firedamage
+            c1.damagebuff += c2.firedamage
             c2.firecheck = 1
         End If
         TextBox1.Text = c1.Life
@@ -217,11 +228,15 @@ Public Class Form1
         g.FillRectangle(Brushes.Red, r1)
         Dim r2 As Rectangle = New Rectangle(210 - c1.Life * 2, 10, c1.Life * 2, 30)
         g.FillRectangle(Brushes.Yellow, r2)
+        Dim r5 As Rectangle = New Rectangle(210 - c1.Life * 2 - c1.damagebuff * 2, 10, c1.damagebuff * 2, 30)
+        g.FillRectangle(Brushes.White, r5)
         Dim a As Integer = PictureBox1.Width
         Dim r3 As Rectangle = New Rectangle(a - 210, 10, 200, 30)
         g.FillRectangle(Brushes.Red, r3)
         Dim r4 As Rectangle = New Rectangle(a - 210, 10, c2.Life * 2, 30)
         g.FillRectangle(Brushes.Yellow, r4)
+        Dim r6 As Rectangle = New Rectangle(a - 210 + c2.Life * 2, 10, c2.damagebuff, 30)
+        g.FillRectangle(Brushes.White, r6)
     End Sub
     Private Sub SetNextFrame(ByRef c As clMove, ByVal ns As Integer, ByVal st As Integer)
         If c.tech_flag = 0 Then
