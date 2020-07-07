@@ -4,7 +4,6 @@ Imports System.Security.Cryptography
 Public Class Form1
     Private Class clMove
         Public Life As Integer = 100
-        Public Life2 As Integer = 100
         Public cx As Integer = 0
         Public cy As Integer = 0
         Public walk_vx = 0
@@ -12,7 +11,8 @@ Public Class Form1
         Public jump_vx As Integer = 0
         Public jump_vy As Double = 0
         Public jump_time = 0
-        Public gravity As Double = 0.5
+        Public jump_height As Integer = 12
+        Public gravity As Double = 0.4
         Public sonic_x As Integer = 1000
         Public sonic_r As Integer = 0
         Public state As Integer = 0
@@ -68,6 +68,7 @@ Public Class Form1
         Dim g As Graphics = Graphics.FromImage(canvas)
         g.DrawImage(img_back, 0, 0, canvas.Width, canvas.Height)
         ProgressFrame(c1)
+        ProgressFrame(c2)
         Dim img As Image
         Select Case c1.state
             Case 0
@@ -115,16 +116,32 @@ Public Class Form1
         Select Case c2.state
             Case 0
                 img = img_r1
+                c2.hitbox = New Rectangle(0, 0, 0, 0)
             Case 1
                 img = img_r2
+                SetNextFrame(c2, 2, 12)
             Case 2
                 img = img_r3
+                If c2.tech_flag = 0 Then
+                    hadou_x = c2.cx
+                    c2.firecheck = 0
+                End If
+                SetNextFrame(c2, 0, 48)
             Case 5
                 img = img_r5
             Case 6
                 img = img_r6
+                SetNextFrame(c2, 0, 9)
+                c2.hitbox = New Rectangle(100, 0, 100, 100)
+                c2.damage = 9
             Case 7
                 img = img_r7
+                SetNextFrame(c2, 0, 12)
+                c2.hitbox = New Rectangle(100, 70, 100, 100)
+                c2.damage = 14
+            Case Else
+                img = img_r1
+                c2.tech_flag = 0
         End Select
         If c2.cy > 0 Then
             Dim center_x As Integer = 400 + c2.cx + 100
@@ -160,19 +177,19 @@ Public Class Form1
             hadou_x = hadou_x - 5
         End If
         Dim h1 As Rectangle = New Rectangle(20 + c1.cx + c1.hitbox.X, 220 + c1.hitbox.Y, c1.hitbox.Width, c1.hitbox.Height)
-        Dim h2 As Rectangle = New Rectangle(450 + c2.cx + c2.hitbox.X, 220 + c2.hitbox.Y, c2.hitbox.Width, c2.hitbox.Height)
+        Dim h2 As Rectangle = New Rectangle(450 + c2.cx - c2.hitbox.X, 220 + c2.hitbox.Y, c2.hitbox.Width, c2.hitbox.Height)
         If CheckBox1.Checked = True Then
             g.DrawRectangle(Pens.Red, h1)
             g.DrawRectangle(Pens.Red, h2)
         End If
-        Dim h3 As Rectangle = New Rectangle(70 + c1.cx + c1.sonic_x, 270, 100, 100)
-        Dim h4 As Rectangle = New Rectangle(410 + c2.cx + hadou_x, 270, 100, 100)
+        Dim h3 As Rectangle = New Rectangle(70 + c1.sonic_x, 280, 90, 90)
+        Dim h4 As Rectangle = New Rectangle(420 + hadou_x, 270, 90, 90)
         If CheckBox1.Checked = True Then
             g.DrawRectangle(Pens.Red, h3)
             g.DrawRectangle(Pens.Red, h4)
         End If
-        Dim r1 As Rectangle = New Rectangle(30 + c1.cx, 220 - c1.cy, 100, 200)
-        Dim r2 As Rectangle = New Rectangle(460 + c2.cx, 220 - c2.cy, 100, 200)
+        Dim r1 As Rectangle = New Rectangle(30 + c1.cx, 220 - c1.cy, 100, 180)
+        Dim r2 As Rectangle = New Rectangle(460 + c2.cx, 220 - c2.cy, 100, 180)
         If CheckBox1.Checked = True Then
             g.DrawRectangle(Pens.Blue, r1)
             g.DrawRectangle(Pens.Blue, r2)
@@ -220,9 +237,8 @@ Public Class Form1
     Private Sub JumpCalc(ByRef c As clMove)
         If c.jump = 1 Then
             c.jump_time = c.jump_time + 1
-            Dim j As Integer = -20
-            Dim t As Double = c.jump_time / 4
-            c.jump_vy = 15 - c.gravity * t * t
+            Dim t As Double = c.jump_time / 6
+            c.jump_vy = c.jump_height - c.gravity * t * t
             c.cx = c.cx + c.jump_vx
             c.cy = c.cy + c.jump_vy
             If c.cy < 0 Then
@@ -348,11 +364,11 @@ Public Class Form1
         Else
             c2.Life = t
         End If
-        If c2.Life2 < 0 Then
-            c2.Life2 = 0
+        If c2.Life < 0 Then
+            c2.Life = 0
         End If
-        If c2.Life2 > 100 Then
-            c2.Life2 = 100
+        If c2.Life > 100 Then
+            c2.Life = 100
         End If
     End Sub
 
@@ -384,14 +400,7 @@ Public Class Form1
     End Sub
 
     Private Sub Button27_Click(sender As Object, e As EventArgs) Handles Button27.Click
-        c2.state = c2.state + 1
-        If c2.state = 2 Then
-            hadou_x = c2.cx
-            c2.firecheck = 0
-        End If
-        If c2.state >= 3 Then
-            c2.state = 0
-        End If
+        c2.state = 1
     End Sub
 
     Private Sub Button22_Click(sender As Object, e As EventArgs) Handles Button22.Click
@@ -433,18 +442,10 @@ Public Class Form1
     End Sub
 
     Private Sub Button25_Click(sender As Object, e As EventArgs) Handles Button25.Click
-        If c2.state = 6 Then
-            c2.state = 0
-        Else
-            c2.state = 6
-        End If
+        c2.state = 6
     End Sub
 
     Private Sub Button28_Click(sender As Object, e As EventArgs) Handles Button28.Click
-        If c2.state = 7 Then
-            c2.state = 0
-        Else
-            c2.state = 7
-        End If
+        c2.state = 7
     End Sub
 End Class
