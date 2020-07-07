@@ -40,6 +40,8 @@ Public Class Form1
     Dim img_r3 As Image = Image.FromFile("..\..\アニメ素材\リュウ波動拳.png")
     Dim img_r4 As Image = Image.FromFile("..\..\アニメ素材\リュウジャンプ.png")
     Dim img_r5 As Image = Image.FromFile("..\..\アニメ素材\リュウ飛び蹴り.png")
+    Dim img_r6 As Image = Image.FromFile("..\..\アニメ素材\リュウパンチ.png")
+    Dim img_r7 As Image = Image.FromFile("..\..\アニメ素材\リュウキック.png")
     Dim img_hadou As Image = Image.FromFile("..\..\アニメ素材\波動拳.png")
     Dim img_back As Image = Image.FromFile("..\..\アニメ素材\背景.png")
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
@@ -93,15 +95,20 @@ Public Class Form1
             End If
             c1.sonic_x = c1.sonic_x + 5
         End If
-        If (c2.state = 0) Then
-            img = img_r1
-        ElseIf c2.state = 1 Then
-            img = img_r2
-        ElseIf c2.state = 2 Then
-            img = img_r3
-        ElseIf c2.state = 5 Then
-            img = img_r5
-        End If
+        Select Case c2.state
+            Case 0
+                img = img_r1
+            Case 1
+                img = img_r2
+            Case 2
+                img = img_r3
+            Case 5
+                img = img_r5
+            Case 6
+                img = img_r6
+            Case 7
+                img = img_r7
+        End Select
         If c2.cy > 0 Then
             Dim center_x As Integer = 400 + c2.cx + 100
             Dim center_y As Integer = 220 - c2.cy + 100
@@ -375,6 +382,22 @@ Public Class Form1
             c2.state = 0
         Else
             c2.state = 5
+        End If
+    End Sub
+
+    Private Sub Button25_Click(sender As Object, e As EventArgs) Handles Button25.Click
+        If c2.state = 6 Then
+            c2.state = 0
+        Else
+            c2.state = 6
+        End If
+    End Sub
+
+    Private Sub Button28_Click(sender As Object, e As EventArgs) Handles Button28.Click
+        If c2.state = 7 Then
+            c2.state = 0
+        Else
+            c2.state = 7
         End If
     End Sub
 End Class
