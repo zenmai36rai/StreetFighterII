@@ -1,4 +1,5 @@
 ﻿Imports System.Data.SqlTypes
+Imports System.Security.Cryptography
 
 Public Class Form1
     Private Class clMove
@@ -26,6 +27,7 @@ Public Class Form1
         Public firecheck As Integer = 0
         Public firedamage As Integer = 25
         Public damagebuff As Integer = 0
+        Public hitmark As Point = New Point(0, 0)
     End Class
     Dim Time As Integer = 99
     Dim frame As Integer = 0
@@ -48,6 +50,7 @@ Public Class Form1
     Dim img_r6 As Image = Image.FromFile("..\..\アニメ素材\リュウパンチ.png")
     Dim img_r7 As Image = Image.FromFile("..\..\アニメ素材\リュウキック.png")
     Dim img_hadou As Image = Image.FromFile("..\..\アニメ素材\波動拳.png")
+    Dim img_hit As Image = Image.FromFile("..\..\アニメ素材\ヒットマーク.png")
     Dim img_back As Image = Image.FromFile("..\..\アニメ素材\背景.png")
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         frame = frame + 1
@@ -178,26 +181,41 @@ Public Class Form1
             c2.Life = c2.Life - c1.damage
             c2.damagebuff += c1.damage
             c1.hitcheck = 1
+            HitStart(c1, h1, r2)
         End If
         If h3.IntersectsWith(r2) And c1.firecheck = 0 Then
             c2.Life = c2.Life - c1.firedamage
             c2.damagebuff += c1.firedamage
             c1.firecheck = 1
+            HitStart(c1, h3, r2)
         End If
         If h2.IntersectsWith(r1) And c2.hitcheck = 0 Then
             c1.Life = c1.Life - c2.damage
             c1.damagebuff += c2.damage
             c2.hitcheck = 1
+            HitStart(c2, h2, r1)
         End If
         If h4.IntersectsWith(r1) And c2.firecheck = 0 Then
             c1.Life = c1.Life - c2.firedamage
             c1.damagebuff += c2.firedamage
             c2.firecheck = 1
+            HitStart(c2, h4, r1)
         End If
         TextBox1.Text = c1.Life
         TextBox2.Text = c2.Life
+        If c2.damagebuff > 0 Then
+            g.DrawImage(img_hit, c1.hitmark.X, c1.hitmark.Y, 200, 200)
+        End If
+        If c1.damagebuff > 0 Then
+            g.DrawImage(img_hit, c2.hitmark.X, c2.hitmark.Y, 200, 200)
+        End If
         g.Dispose()
         PictureBox1.Image = canvas
+    End Sub
+    Private Sub HitStart(ByRef c As clMove, ByVal h1 As Rectangle, ByVal r1 As Rectangle)
+        Dim h As Rectangle = h1
+        h.Intersect(r1)
+        c.hitmark = New Point(h.X + h.Width / 2, h.Y + h.Height / 2)
     End Sub
     Private Sub JumpCalc(ByRef c As clMove)
         If c.jump = 1 Then
