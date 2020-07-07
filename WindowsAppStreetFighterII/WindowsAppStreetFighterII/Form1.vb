@@ -129,6 +129,8 @@ Public Class Form1
                 SetNextFrame(c2, 0, 48)
             Case 5
                 img = img_r5
+                c2.hitbox = New Rectangle(100, 70, 100, 100)
+                c2.damage = 14
             Case 6
                 img = img_r6
                 SetNextFrame(c2, 0, 9)
@@ -176,8 +178,8 @@ Public Class Form1
             g.DrawImage(img_hadou, 360 + hadou_x, 220, 200, 200)
             hadou_x = hadou_x - 5
         End If
-        Dim h1 As Rectangle = New Rectangle(20 + c1.cx + c1.hitbox.X, 220 + c1.hitbox.Y, c1.hitbox.Width, c1.hitbox.Height)
-        Dim h2 As Rectangle = New Rectangle(450 + c2.cx - c2.hitbox.X, 220 + c2.hitbox.Y, c2.hitbox.Width, c2.hitbox.Height)
+        Dim h1 As Rectangle = New Rectangle(20 + c1.cx + c1.hitbox.X, 220 - c1.cy + c1.hitbox.Y, c1.hitbox.Width, c1.hitbox.Height)
+        Dim h2 As Rectangle = New Rectangle(450 + c2.cx - c2.hitbox.X, 220 - c2.cy + c2.hitbox.Y, c2.hitbox.Width, c2.hitbox.Height)
         If CheckBox1.Checked = True Then
             g.DrawRectangle(Pens.Red, h1)
             g.DrawRectangle(Pens.Red, h2)
@@ -247,6 +249,7 @@ Public Class Form1
                 c.jump_vx = 0
                 c.jump_vy = 0
                 c.state = 0
+                c.hitcheck = 0
                 c.cy = 0
             End If
         Else
@@ -447,5 +450,81 @@ Public Class Form1
 
     Private Sub Button28_Click(sender As Object, e As EventArgs) Handles Button28.Click
         c2.state = 7
+    End Sub
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.KeyPreview = True
+    End Sub
+    Private Sub Form1_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
+        Select Case e.KeyCode
+            Case Keys.Q
+                Button7.PerformClick()
+            Case Keys.W
+                Button8.PerformClick()
+            Case Keys.E
+                Button9.PerformClick()
+            Case Keys.F
+                Button10.PerformClick()
+            Case Keys.G
+                Button11.PerformClick()
+            Case Keys.H
+                Button12.PerformClick()
+            Case Keys.V
+                Button13.PerformClick()
+            Case Keys.B
+                Button14.PerformClick()
+            Case Keys.N
+                Button15.PerformClick()
+            Case Keys.NumPad7
+                Button22.PerformClick()
+            Case Keys.NumPad8
+                Button23.PerformClick()
+            Case Keys.NumPad9
+                Button24.PerformClick()
+            Case Keys.K
+                Button25.PerformClick()
+            Case Keys.L
+                Button26.PerformClick()
+            Case Keys.Oemplus
+                Button27.PerformClick()
+            Case Keys.Oemcomma
+                Button28.PerformClick()
+            Case Keys.OemPeriod
+                Button29.PerformClick()
+            Case Keys.OemQuestion
+                Button30.PerformClick()
+        End Select
+    End Sub
+    Private Sub Form1_KeyPress(sender As Object, e As KeyPressEventArgs) Handles MyBase.KeyPress
+        Select Case e.KeyChar
+            Case "A", "a"
+                c1.walk_vx = -5
+            Case "S", "s"
+                c1.walk_vx = 0
+            Case "D", "d"
+                c1.walk_vx = 5
+            Case "4"
+                c2.walk_vx = -5
+            Case "5"
+                c2.walk_vx = 0
+            Case "6"
+                c2.walk_vx = 5
+        End Select
+    End Sub
+
+    Private Sub Form1_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
+        Select Case e.KeyCode
+            Case Keys.A
+                c1.walk_vx = 0
+            Case Keys.S
+                c1.walk_vx = 0
+            Case Keys.D
+                c1.walk_vx = 0
+            Case Keys.NumPad4
+                c2.walk_vx = 0
+            Case Keys.NumPad5
+                c2.walk_vx = 0
+            Case Keys.NumPad6
+                c2.walk_vx = 0
+        End Select
     End Sub
 End Class
