@@ -201,8 +201,8 @@ Public Class Form1
             g.DrawRectangle(Pens.Red, h1)
             g.DrawRectangle(Pens.Red, h2)
         End If
-        Dim h3 As Rectangle = New Rectangle(70 + c1.sonic_x, 280, 90, 90)
-        Dim h4 As Rectangle = New Rectangle(420 + hadou_x, 270, 90, 90)
+        Dim h3 As Rectangle = New Rectangle(70 + c1.sonic_x, 280, 80, 80)
+        Dim h4 As Rectangle = New Rectangle(430 + hadou_x, 260, 80, 80)
         If CheckBox1.Checked = True Then
             If c1.firecheck = 0 Then
                 g.DrawRectangle(Pens.Red, h3)
@@ -216,6 +216,10 @@ Public Class Form1
         If CheckBox1.Checked = True Then
             g.DrawRectangle(Pens.Blue, r1)
             g.DrawRectangle(Pens.Blue, r2)
+        End If
+        If h3.IntersectsWith(h4) And c1.firecheck = 0 And c2.firecheck = 0 Then
+            c1.firecheck = 1
+            c2.firecheck = 1
         End If
         HitJudge(h1, r2, c1, c2)
         HitJudgeFire(h3, r2, c1, c2)
