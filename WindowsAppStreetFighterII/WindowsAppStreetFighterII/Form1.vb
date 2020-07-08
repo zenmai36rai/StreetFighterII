@@ -112,6 +112,8 @@ Public Class Form1
         DrawTime(g)
         JumpCalc(c1)
         JumpCalc(c2)
+        Dim shadow As Rectangle = New Rectangle(40 + c1.cx, 380, 100, 30)
+        g.FillEllipse(Brushes.Black, shadow)
         g.DrawImage(img, 20 + c1.cx, 220 - c1.cy, 200, 200)
         If c1.sonic_x <= canvas.Width And c1.firecheck = 0 Then
             If c1.sonic_x Mod 50 = 0 Then
@@ -158,6 +160,8 @@ Public Class Form1
                 img = img_r1
                 c2.tech_flag = 0
         End Select
+        shadow = New Rectangle(460 + c2.cx, 380, 100, 30)
+        g.FillEllipse(Brushes.Black, shadow)
         If c2.cy > 0 Then
             Dim center_x As Integer = 400 + c2.cx + 100
             Dim center_y As Integer = 220 - c2.cy + 100
@@ -207,8 +211,8 @@ Public Class Form1
                 g.DrawRectangle(Pens.Red, h4)
             End If
         End If
-        Dim r1 As Rectangle = New Rectangle(30 + c1.cx, 220 - c1.cy, 100, 180)
-        Dim r2 As Rectangle = New Rectangle(460 + c2.cx, 220 - c2.cy, 100, 180)
+        Dim r1 As Rectangle = New Rectangle(30 + c1.cx, 220 - c1.cy, 100, 160)
+        Dim r2 As Rectangle = New Rectangle(460 + c2.cx, 220 - c2.cy, 100, 160)
         If CheckBox1.Checked = True Then
             g.DrawRectangle(Pens.Blue, r1)
             g.DrawRectangle(Pens.Blue, r2)
@@ -283,6 +287,14 @@ Public Class Form1
         Dim b As Brush = Brushes.White
         Dim p As Point = New Point(PictureBox1.Width / 2 - 30, 10)
         g.DrawString(Time.ToString, f, b, p)
+        f = New Font("MSゴシック", 16)
+        b = Brushes.White
+        p = New Point(10, 45)
+        Dim name As String = "GUILE"
+        g.DrawString(name, f, b, p)
+        name = "RYU"
+        p = New Point(PictureBox1.Width - 15 - f.Size * name.Length, 45)
+        g.DrawString(name, f, b, p)
         Dim r1 As Rectangle = New Rectangle(10, 10, 200, 30)
         g.FillRectangle(Brushes.Red, r1)
         Dim r2 As Rectangle = New Rectangle(210 - c1.Life * 2, 10, c1.Life * 2, 30)
