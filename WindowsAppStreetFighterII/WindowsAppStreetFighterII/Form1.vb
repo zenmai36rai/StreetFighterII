@@ -27,6 +27,7 @@ Public Class Form1
         Public firecheck As Integer = 0
         Public firedamage As Integer = 25
         Public damagebuff As Integer = 0
+        Public guardbuff As Integer = 0
         Public hitmark As Point = New Point(0, 0)
     End Class
     Dim Time As Integer = 99
@@ -40,15 +41,17 @@ Public Class Form1
     Dim img_2 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風ムエタイキック.png")
     Dim img_3 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風構え.png")
     Dim img_4 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風ソニックブーム.png")
+    Dim img_5 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風ガード.png")
     Dim img_sonic As Image = Image.FromFile("..\..\アニメ素材\ソニックブーム.png")
     Dim img_sonic2 As Image = Image.FromFile("..\..\アニメ素材\ソニックブーム２.png")
     Dim img_r1 As Image = Image.FromFile("..\..\アニメ素材\リュウ立ち.png")
     Dim img_r2 As Image = Image.FromFile("..\..\アニメ素材\リュウ構え.png")
     Dim img_r3 As Image = Image.FromFile("..\..\アニメ素材\リュウ波動拳.png")
     Dim img_r4 As Image = Image.FromFile("..\..\アニメ素材\リュウジャンプ.png")
-    Dim img_r5 As Image = Image.FromFile("..\..\アニメ素材\リュウ飛び蹴り.png")
+    Dim img_r5 As Image = Image.FromFile("..\..\アニメ素材\リュウガード.png")
     Dim img_r6 As Image = Image.FromFile("..\..\アニメ素材\リュウパンチ.png")
     Dim img_r7 As Image = Image.FromFile("..\..\アニメ素材\リュウキック.png")
+    Dim img_r8 As Image = Image.FromFile("..\..\アニメ素材\リュウ飛び蹴り.png")
     Dim img_hadou As Image = Image.FromFile("..\..\アニメ素材\波動拳.png")
     Dim img_hit As Image = Image.FromFile("..\..\アニメ素材\ヒットマーク.png")
     Dim img_back As Image = Image.FromFile("..\..\アニメ素材\背景.png")
@@ -62,6 +65,12 @@ Public Class Form1
         End If
         If c2.damagebuff > 0 Then
             c2.damagebuff -= 1
+        End If
+        If c1.guardbuff > 0 Then
+            c1.guardbuff -= 1
+        End If
+        If c2.guardbuff > 0 Then
+            c2.guardbuff -= 1
         End If
         PictureBox1.BackColor = Color.Black
         Dim canvas As New Bitmap(PictureBox1.Width, PictureBox1.Height)
@@ -94,6 +103,8 @@ Public Class Form1
                     c1.firecheck = 0
                 End If
                 SetNextFrame(c1, 0, 36)
+            Case 5
+                img = img_5
             Case Else
                 img = img_0
                 c1.tech_flag = 0
@@ -129,8 +140,6 @@ Public Class Form1
                 SetNextFrame(c2, 0, 48)
             Case 5
                 img = img_r5
-                c2.hitbox = New Rectangle(100, 70, 100, 100)
-                c2.damage = 14
             Case 6
                 img = img_r6
                 SetNextFrame(c2, 0, 9)
@@ -141,6 +150,10 @@ Public Class Form1
                 SetNextFrame(c2, 0, 12)
                 c2.hitbox = New Rectangle(100, 70, 100, 100)
                 c2.damage = 14
+            Case 8
+                img = img_r8
+                c2.hitbox = New Rectangle(100, 70, 100, 100)
+                c2.damage = 14
             Case Else
                 img = img_r1
                 c2.tech_flag = 0
@@ -149,8 +162,8 @@ Public Class Form1
             Dim center_x As Integer = 400 + c2.cx + 100
             Dim center_y As Integer = 220 - c2.cy + 100
             Dim r As Double = 100 * Math.Sqrt(2)
-            If c2.state = 5 Then
-                g.DrawImage(img_r5, 400 + c2.cx, 220 - c2.cy, 200, 200)
+            If c2.state = 8 Then
+                g.DrawImage(img_r8, 400 + c2.cx, 220 - c2.cy, 200, 200)
             ElseIf c2.jump_vx < 0 Then
                 Dim angle1 As Double = (135 + c2.jump_time / 19 * 360) * 3.14 / 180
                 Dim angle2 As Double = (45 + c2.jump_time / 19 * 360) * 3.14 / 180
@@ -187,8 +200,12 @@ Public Class Form1
         Dim h3 As Rectangle = New Rectangle(70 + c1.sonic_x, 280, 90, 90)
         Dim h4 As Rectangle = New Rectangle(420 + hadou_x, 270, 90, 90)
         If CheckBox1.Checked = True Then
-            g.DrawRectangle(Pens.Red, h3)
-            g.DrawRectangle(Pens.Red, h4)
+            If c1.firecheck = 0 Then
+                g.DrawRectangle(Pens.Red, h3)
+            End If
+            If c2.firecheck = 0 Then
+                g.DrawRectangle(Pens.Red, h4)
+            End If
         End If
         Dim r1 As Rectangle = New Rectangle(30 + c1.cx, 220 - c1.cy, 100, 180)
         Dim r2 As Rectangle = New Rectangle(460 + c2.cx, 220 - c2.cy, 100, 180)
@@ -196,40 +213,45 @@ Public Class Form1
             g.DrawRectangle(Pens.Blue, r1)
             g.DrawRectangle(Pens.Blue, r2)
         End If
-        If h1.IntersectsWith(r2) And c1.hitcheck = 0 Then
-            c2.Life = c2.Life - c1.damage
-            c2.damagebuff += c1.damage
-            c1.hitcheck = 1
-            HitStart(c1, h1, r2)
-        End If
-        If h3.IntersectsWith(r2) And c1.firecheck = 0 Then
-            c2.Life = c2.Life - c1.firedamage
-            c2.damagebuff += c1.firedamage
-            c1.firecheck = 1
-            HitStart(c1, h3, r2)
-        End If
-        If h2.IntersectsWith(r1) And c2.hitcheck = 0 Then
-            c1.Life = c1.Life - c2.damage
-            c1.damagebuff += c2.damage
-            c2.hitcheck = 1
-            HitStart(c2, h2, r1)
-        End If
-        If h4.IntersectsWith(r1) And c2.firecheck = 0 Then
-            c1.Life = c1.Life - c2.firedamage
-            c1.damagebuff += c2.firedamage
-            c2.firecheck = 1
-            HitStart(c2, h4, r1)
-        End If
+        HitJudge(h1, r2, c1, c2)
+        HitJudgeFire(h3, r2, c1, c2)
+        HitJudge(h2, r1, c2, c1)
+        HitJudgeFire(h4, r1, c2, c1)
         TextBox1.Text = c1.Life
         TextBox2.Text = c2.Life
-        If c2.damagebuff > 0 Then
+        If c2.damagebuff > 0 Or c2.guardbuff > 0 Then
             g.DrawImage(img_hit, c1.hitmark.X, c1.hitmark.Y, 200, 200)
         End If
-        If c1.damagebuff > 0 Then
+        If c1.damagebuff > 0 Or c1.guardbuff > 0 Then
             g.DrawImage(img_hit, c2.hitmark.X, c2.hitmark.Y, 200, 200)
         End If
         g.Dispose()
         PictureBox1.Image = canvas
+    End Sub
+    Private Sub HitJudge(ByVal h As Rectangle, ByVal r As Rectangle, ByRef c As clMove, ByRef cc As clMove)
+        If h.IntersectsWith(r) And c.hitcheck = 0 Then
+            If cc.state <> 5 Then
+                cc.Life = cc.Life - c.damage
+                cc.damagebuff += c.damage
+            Else
+                cc.guardbuff += c.damage
+            End If
+            c.hitcheck = 1
+            HitStart(c, h, r)
+        End If
+    End Sub
+    Private Sub HitJudgeFire(ByVal h As Rectangle, ByVal r As Rectangle, ByRef c As clMove, ByRef cc As clMove)
+        If h.IntersectsWith(r) And c.firecheck = 0 Then
+            If cc.state <> 5 Then
+                cc.Life = cc.Life - c.firedamage
+                cc.damagebuff += c.firedamage
+            Else
+                cc.Life = cc.Life - c.firedamage / 4
+                cc.damagebuff += c.firedamage / 4
+            End If
+            c.firecheck = 1
+            HitStart(c, h, r)
+        End If
     End Sub
     Private Sub HitStart(ByRef c As clMove, ByVal h1 As Rectangle, ByVal r1 As Rectangle)
         Dim h As Rectangle = h1
@@ -321,7 +343,7 @@ Public Class Form1
         End If
     End Sub
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
-        c1.state = 0
+        c1.state = 5
     End Sub
 
     Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
@@ -437,10 +459,10 @@ Public Class Form1
     End Sub
 
     Private Sub Button30_Click(sender As Object, e As EventArgs) Handles Button30.Click
-        If c2.state = 5 Then
+        If c2.state = 8 Then
             c2.state = 0
         Else
-            c2.state = 5
+            c2.state = 8
         End If
     End Sub
 
@@ -462,6 +484,8 @@ Public Class Form1
                 Button8.PerformClick()
             Case Keys.E
                 Button9.PerformClick()
+            Case Keys.S
+                Button5.PerformClick()
             Case Keys.F
                 Button10.PerformClick()
             Case Keys.G
@@ -474,6 +498,8 @@ Public Class Form1
                 Button14.PerformClick()
             Case Keys.N
                 Button15.PerformClick()
+            Case Keys.NumPad5
+                Button20.PerformClick()
             Case Keys.NumPad7
                 Button22.PerformClick()
             Case Keys.NumPad8
@@ -526,5 +552,17 @@ Public Class Form1
             Case Keys.NumPad6
                 c2.walk_vx = 0
         End Select
+    End Sub
+
+    Private Sub Button20_Click(sender As Object, e As EventArgs) Handles Button20.Click
+        c2.state = 5
+    End Sub
+
+    Private Sub Button26_Click(sender As Object, e As EventArgs) Handles Button26.Click
+        c2.state = 6
+    End Sub
+
+    Private Sub Button29_Click(sender As Object, e As EventArgs) Handles Button29.Click
+        c2.state = 7
     End Sub
 End Class
