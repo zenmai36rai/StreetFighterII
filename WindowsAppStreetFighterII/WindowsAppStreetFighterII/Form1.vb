@@ -207,12 +207,12 @@ Public Class Form1
                     c2.kokyu_ud = KOKYU_FLAG_DOWN
                 End If
             End If
-            Dim k_x_l As Integer = Math.Abs((40 - c2.kokyu) / 20)
-            Dim k_x_r As Integer = Math.Abs((40 - c2.kokyu) / 20)
+            Dim k_x_l As Integer = 2 - Math.Abs((40 - c2.kokyu) / 20)
+            Dim k_x_r As Integer = 2 - Math.Abs((40 - c2.kokyu) / 20)
             If c2.kokyu_ud = KOKYU_FLAG_DOWN Then
-                k_x_l = k_x_l * -1
-            Else
                 k_x_r = k_x_r * -1
+            Else
+                k_x_l = k_x_l * -1
             End If
             Dim k As Integer = (c2.kokyu - 60) / 10
             g.DrawImage(img_r0_2, 400 + c2.cx + 138 + k_x_l, 220 - c2.cy + 48 + k, 38, 55)
