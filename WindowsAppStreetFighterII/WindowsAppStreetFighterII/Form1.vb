@@ -62,6 +62,8 @@ Public Class Form1
     Dim img_hadou As Image = Image.FromFile("..\..\アニメ素材\波動拳.png")
     Dim img_hit As Image = Image.FromFile("..\..\アニメ素材\ヒットマーク.png")
     Dim img_back As Image = Image.FromFile("..\..\アニメ素材\背景.png")
+    Dim img_gara As Image = Image.FromFile("..\..\アニメ素材\観客背景.png")
+    Dim img_audi As Image = Image.FromFile("..\..\アニメ素材\観客手前.png")
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         frame = frame + 1
         If frame Mod 100 = 0 Then
@@ -83,9 +85,26 @@ Public Class Form1
         Dim canvas As New Bitmap(PictureBox1.Width, PictureBox1.Height)
         Dim g As Graphics = Graphics.FromImage(canvas)
         g.DrawImage(img_back, 0, 0, canvas.Width, canvas.Height)
+        Dim img As Image
+        img = img_gara
+        'ColorMatrixオブジェクトの作成
+        Dim cm As New System.Drawing.Imaging.ColorMatrix()
+        'ColorMatrixの行列の値を変更して、アルファ値が0.5に変更されるようにする
+        cm.Matrix00 = 1
+        cm.Matrix11 = 1
+        cm.Matrix22 = 1
+        cm.Matrix33 = 0.5F
+        cm.Matrix44 = 1
+        'ImageAttributesオブジェクトの作成
+        Dim ia As New System.Drawing.Imaging.ImageAttributes()
+        ia.SetColorMatrix(cm)
+        'ImageAttributesを使用して画像を描画
+        Dim offset = 70
+        g.DrawImage(img, New Rectangle(0, PictureBox1.Height - img.Height + offset, img.Width, img.Height),
+        0, 0, img.Width, img.Height, GraphicsUnit.Pixel, ia)
+
         ProgressFrame(c1)
         ProgressFrame(c2)
-        Dim img As Image
         Select Case c1.state
             Case 0
                 img = img_0
@@ -263,6 +282,15 @@ Public Class Form1
         If c1.damagebuff > 0 Or c1.guardbuff > 0 Then
             g.DrawImage(img_hit, c2.hitmark.X, c2.hitmark.Y, 200, 200)
         End If
+
+        'ColorMatrixを設定する
+        cm.Matrix33 = 1
+        ia.SetColorMatrix(cm)
+        img = img_audi
+        'ImageAttributesを使用して画像を描画
+        offset = 77
+        g.DrawImage(img, New Rectangle(0, PictureBox1.Height - img.Height + offset, img.Width, img.Height),
+        0, 0, img.Width, img.Height, GraphicsUnit.Pixel, ia)
         g.Dispose()
         PictureBox1.Image = canvas
     End Sub

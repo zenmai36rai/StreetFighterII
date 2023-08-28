@@ -143,6 +143,8 @@
     <Content Include="アニメ素材\リュウ立ち\3.png" />
     <Content Include="アニメ素材\波動拳.png" />
     <Content Include="アニメ素材\背景.png" />
+    <Content Include="アニメ素材\観客手前.png" />
+    <Content Include="アニメ素材\観客背景.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
