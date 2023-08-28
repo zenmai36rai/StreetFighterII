@@ -288,7 +288,7 @@ Public Class Form1
         ia.SetColorMatrix(cm)
         img = img_audi
         'ImageAttributesを使用して画像を描画
-        offset = 77
+        offset = 70
         g.DrawImage(img, New Rectangle(0, PictureBox1.Height - img.Height + offset, img.Width, img.Height),
         0, 0, img.Width, img.Height, GraphicsUnit.Pixel, ia)
         g.Dispose()
