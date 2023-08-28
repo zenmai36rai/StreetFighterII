@@ -138,6 +138,9 @@
     <Content Include="アニメ素材\リュウ構え.png" />
     <Content Include="アニメ素材\リュウ波動拳.png" />
     <Content Include="アニメ素材\リュウ立ち.png" />
+    <Content Include="アニメ素材\リュウ立ち\1.png" />
+    <Content Include="アニメ素材\リュウ立ち\2.png" />
+    <Content Include="アニメ素材\リュウ立ち\3.png" />
     <Content Include="アニメ素材\波動拳.png" />
     <Content Include="アニメ素材\背景.png" />
   </ItemGroup>

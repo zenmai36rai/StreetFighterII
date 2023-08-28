@@ -2,6 +2,8 @@
 Imports System.Security.Cryptography
 
 Public Class Form1
+    Const KOKYU_FLAG_UP = 0
+    Const KOKYU_FLAG_DOWN = 1
     Private Class clMove
         Public Life As Integer = 100
         Public cx As Integer = 0
@@ -29,6 +31,8 @@ Public Class Form1
         Public damagebuff As Integer = 0
         Public guardbuff As Integer = 0
         Public hitmark As Point = New Point(0, 0)
+        Public kokyu As Integer = 0
+        Public kokyu_ud As Integer = KOKYU_FLAG_DOWN
     End Class
     Dim Time As Integer = 99
     Dim frame As Integer = 0
@@ -44,6 +48,9 @@ Public Class Form1
     Dim img_5 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風ガード.png")
     Dim img_sonic As Image = Image.FromFile("..\..\アニメ素材\ソニックブーム.png")
     Dim img_sonic2 As Image = Image.FromFile("..\..\アニメ素材\ソニックブーム２.png")
+    Dim img_r0_1 As Image = Image.FromFile("..\..\アニメ素材\リュウ立ち\1.png")
+    Dim img_r0_2 As Image = Image.FromFile("..\..\アニメ素材\リュウ立ち\2.png")
+    Dim img_r0_3 As Image = Image.FromFile("..\..\アニメ素材\リュウ立ち\3.png")
     Dim img_r1 As Image = Image.FromFile("..\..\アニメ素材\リュウ立ち.png")
     Dim img_r2 As Image = Image.FromFile("..\..\アニメ素材\リュウ構え.png")
     Dim img_r3 As Image = Image.FromFile("..\..\アニメ素材\リュウ波動拳.png")
@@ -128,7 +135,7 @@ Public Class Form1
         End If
         Select Case c2.state
             Case 0
-                img = img_r1
+                img = img_r0_1
                 c2.hitbox = New Rectangle(0, 0, 0, 0)
             Case 1
                 img = img_r2
@@ -157,7 +164,7 @@ Public Class Form1
                 c2.hitbox = New Rectangle(100, 70, 100, 100)
                 c2.damage = 14
             Case Else
-                img = img_r1
+                img = img_r0_1
                 c2.tech_flag = 0
         End Select
         shadow = New Rectangle(460 + c2.cx, 380, 100, 30)
@@ -187,6 +194,22 @@ Public Class Form1
             Else
                 g.DrawImage(img_r4, 400 + c2.cx, 220 - c2.cy, 200, 200)
             End If
+        ElseIf c2.state = 0 Then
+            g.DrawImage(img, 400 + c2.cx, 220 - c2.cy, 200, 200)
+            If c2.kokyu_ud = KOKYU_FLAG_DOWN Then
+                c2.kokyu = c2.kokyu + 1
+                If c2.kokyu = 20 Then
+                    c2.kokyu_ud = KOKYU_FLAG_UP
+                End If
+            Else
+                c2.kokyu = c2.kokyu - 1
+                If c2.kokyu = -60 Then
+                    c2.kokyu_ud = KOKYU_FLAG_DOWN
+                End If
+            End If
+                Dim k As Integer = c2.kokyu / 10
+            g.DrawImage(img_r0_2, 400 + c2.cx + 138, 220 - c2.cy + 48 + k, 38, 55)
+            g.DrawImage(img_r0_3, 400 + c2.cx + 40, 220 - c2.cy + 44 + k, 44, 48)
         Else
             g.DrawImage(img, 400 + c2.cx, 220 - c2.cy, 200, 200)
         End If
