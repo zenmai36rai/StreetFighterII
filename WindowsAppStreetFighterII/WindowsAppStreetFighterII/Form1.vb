@@ -2,12 +2,15 @@
 Imports System.Security.Cryptography
 
 Public Class Form1
-    Const ROBOT_MOVE = False
+    Const ROBOT_MOVE = True
     Const KOKYU_FLAG_UP = 0
     Const KOKYU_FLAG_DOWN = 1
     Const DIREC_RIGHT = 0
     Const DIREC_LEFT = 1
     Private Class clMove
+        Public Sub New(ByVal Direc As Integer)
+            direction = Direc
+        End Sub
         Public Life As Integer = 100
         Public cx As Integer = 0
         Public cy As Integer = 0
@@ -41,8 +44,8 @@ Public Class Form1
     End Class
     Dim Time As Integer = 99
     Dim frame As Integer = 0
-    Dim c1 As clMove = New clMove()
-    Dim c2 As clMove = New clMove()
+    Dim c1 As clMove = New clMove(DIREC_RIGHT)
+    Dim c2 As clMove = New clMove(DIREC_LEFT)
     Dim ryu_state = 1
     Dim hadou_x = 1000
     Dim hadou_v = -1
@@ -214,13 +217,13 @@ Public Class Form1
                 c2.tech_flag = 0
         End Select
         If 400 + c2.cx > c1.cx Then
-            If c2.direction = DIREC_LEFT Then
-                c2.direction = DIREC_RIGHT
+            If c2.direction = DIREC_RIGHT Then
+                c2.direction = DIREC_LEFT
                 img.RotateFlip(RotateFlipType.Rotate180FlipY)
             End If
         Else
-            If c2.direction = DIREC_RIGHT Then
-                c2.direction = DIREC_LEFT
+            If c2.direction = DIREC_LEFT Then
+                c2.direction = DIREC_RIGHT
                 img.RotateFlip(RotateFlipType.Rotate180FlipY)
             End If
         End If
