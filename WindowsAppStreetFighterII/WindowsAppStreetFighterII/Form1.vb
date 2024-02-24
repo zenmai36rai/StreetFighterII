@@ -295,10 +295,10 @@ Public Class Form1
         g.Dispose()
         PictureBox1.Image = canvas
         If ROBOT_MOVE Then
-            Dim Rd As Integer = Rnd()
-            Select Case c1.state
+            Dim Rd As Integer = Rnd() * 60
+            Select Case c2.state
                 Case 0
-                    If Rd = 0 Then
+                    If Rd < 1 Then
                         Button27.PerformClick()
                     End If
                 Case Else
@@ -563,6 +563,7 @@ Public Class Form1
     End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.KeyPreview = True
+        Randomize()
     End Sub
     Private Sub Form1_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
         Select Case e.KeyCode
