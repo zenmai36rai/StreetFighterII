@@ -2,6 +2,7 @@
 Imports System.Security.Cryptography
 
 Public Class Form1
+    Const ROBOT_MOVE = True
     Const KOKYU_FLAG_UP = 0
     Const KOKYU_FLAG_DOWN = 1
     Private Class clMove
@@ -293,6 +294,19 @@ Public Class Form1
         0, 0, img.Width, img.Height, GraphicsUnit.Pixel, ia)
         g.Dispose()
         PictureBox1.Image = canvas
+        If ROBOT_MOVE Then
+            Dim Rd As Integer = Rnd()
+            Select Case c1.state
+                Case 0
+                    If Rd = 0 Then
+                        Button27.PerformClick()
+                    End If
+                Case Else
+
+            End Select
+
+        End If
+
     End Sub
     Private Sub HitJudge(ByVal h As Rectangle, ByVal r As Rectangle, ByRef c As clMove, ByRef cc As clMove)
         If h.IntersectsWith(r) And c.hitcheck = 0 Then
