@@ -335,11 +335,25 @@ Public Class Form1
         g.Dispose()
         PictureBox1.Image = canvas
         If ROBOT_MOVE Then
+            Dim dist As Integer = Math.Abs(400 + c2.cx - c1.cx)
             Dim Rd As Integer = Rnd() * 60
             Select Case c2.state
                 Case 0
-                    If Rd < 1 Then
+                    If dist < 150 Then
+                        If Rd < 5 Then
+                            Button25.PerformClick()
+                        ElseIf Rd < 10 Then
+                            Button28.PerformClick()
+                        End If
+                    ElseIf Rd < 2 Then
                         Button27.PerformClick()
+                    End If
+                    If 2 < Rd And Rd <= 3 And dist > 300 Then
+                        If c2.direction = DIREC_LEFT Then
+                            Button22.PerformClick()
+                        Else
+                            Button24.PerformClick()
+                        End If
                     End If
                 Case Else
 
