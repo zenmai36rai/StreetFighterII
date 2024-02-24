@@ -2,13 +2,16 @@
 Imports System.Security.Cryptography
 
 Public Class Form1
-    Const ROBOT_MOVE = True
+    Const ROBOT_MOVE = False
     Const KOKYU_FLAG_UP = 0
     Const KOKYU_FLAG_DOWN = 1
+    Const DIREC_RIGHT = 0
+    Const DIREC_LEFT = 1
     Private Class clMove
         Public Life As Integer = 100
         Public cx As Integer = 0
         Public cy As Integer = 0
+        Public direction As Integer = DIREC_RIGHT
         Public walk_vx = 0
         Public jump As Integer = 0
         Public jump_vx As Integer = 0
@@ -18,6 +21,7 @@ Public Class Form1
         Public gravity As Double = 0.4
         Public sonic_x As Integer = 1000
         Public sonic_r As Integer = 0
+        Public sonic_v As Integer = 1
         Public state As Integer = 0
         Public next_state As Integer = 0
         Public state_time As Integer = 0
@@ -41,6 +45,7 @@ Public Class Form1
     Dim c2 As clMove = New clMove()
     Dim ryu_state = 1
     Dim hadou_x = 1000
+    Dim hadou_v = -1
     Dim img_0 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風立ち.png")
     Dim img_1 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風パンチ.png")
     Dim img_2 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風ムエタイキック.png")
@@ -127,6 +132,11 @@ Public Class Form1
                 img = img_4
                 If c1.tech_flag = 0 Then
                     c1.sonic_x = c1.cx
+                    If c1.cx < 400 + c2.cx Then
+                        c1.sonic_v = 1
+                    Else
+                        c1.sonic_v = -1
+                    End If
                     c1.firecheck = 0
                 End If
                 SetNextFrame(c1, 0, 36)
@@ -136,13 +146,24 @@ Public Class Form1
                 img = img_0
                 c1.tech_flag = 0
         End Select
+        If 400 + c2.cx < c1.cx Then
+            If c1.direction = DIREC_RIGHT Then
+                c1.direction = DIREC_LEFT
+                img.RotateFlip(RotateFlipType.Rotate180FlipY)
+            End If
+        Else
+            If c1.direction = DIREC_LEFT Then
+                c1.direction = DIREC_RIGHT
+                img.RotateFlip(RotateFlipType.Rotate180FlipY)
+            End If
+        End If
         DrawTime(g)
         JumpCalc(c1)
         JumpCalc(c2)
         Dim shadow As Rectangle = New Rectangle(40 + c1.cx, 380, 100, 30)
         g.FillEllipse(Brushes.Black, shadow)
         g.DrawImage(img, 20 + c1.cx, 220 - c1.cy, 200, 200)
-        If c1.sonic_x <= canvas.Width And c1.firecheck = 0 Then
+        If c1.sonic_x <= canvas.Width And c1.sonic_x >= -100 And c1.firecheck = 0 Then
             If c1.sonic_x Mod 50 = 0 Then
                 c1.sonic_r = c1.sonic_r + 1
             End If
@@ -151,7 +172,7 @@ Public Class Form1
             Else
                 g.DrawImage(img_sonic2, 20 + c1.sonic_x, 220, 200, 200)
             End If
-            c1.sonic_x = c1.sonic_x + 5
+            c1.sonic_x = c1.sonic_x + (c1.sonic_v * 5)
         End If
         Select Case c2.state
             Case 0
@@ -164,6 +185,11 @@ Public Class Form1
                 img = img_r3
                 If c2.tech_flag = 0 Then
                     hadou_x = c2.cx
+                    If 400 + c2.cx < c1.cx Then
+                        hadou_v = -1
+                    Else
+                        hadou_v = 1
+                    End If
                     c2.firecheck = 0
                 End If
                 SetNextFrame(c2, 0, 48)
@@ -187,6 +213,17 @@ Public Class Form1
                 img = img_r0_1
                 c2.tech_flag = 0
         End Select
+        If 400 + c2.cx > c1.cx Then
+            If c2.direction = DIREC_LEFT Then
+                c2.direction = DIREC_RIGHT
+                img.RotateFlip(RotateFlipType.Rotate180FlipY)
+            End If
+        Else
+            If c2.direction = DIREC_RIGHT Then
+                c2.direction = DIREC_LEFT
+                img.RotateFlip(RotateFlipType.Rotate180FlipY)
+            End If
+        End If
         shadow = New Rectangle(460 + c2.cx, 380, 100, 30)
         g.FillEllipse(Brushes.Black, shadow)
         If c2.cy > 0 Then
@@ -241,9 +278,9 @@ Public Class Form1
             g.DrawImage(img, 400 + c2.cx, 220 - c2.cy, 200, 200)
         End If
 
-        If hadou_x <= canvas.Width And c2.firecheck = 0 Then
+        If hadou_x <= canvas.Width And -450 <= hadou_x And c2.firecheck = 0 Then
             g.DrawImage(img_hadou, 360 + hadou_x, 220, 200, 200)
-            hadou_x = hadou_x - 5
+            hadou_x = hadou_x - (hadou_v * 5)
         End If
         Dim h1 As Rectangle = New Rectangle(20 + c1.cx + c1.hitbox.X, 220 - c1.cy + c1.hitbox.Y, c1.hitbox.Width, c1.hitbox.Height)
         Dim h2 As Rectangle = New Rectangle(450 + c2.cx - c2.hitbox.X, 220 - c2.cy + c2.hitbox.Y, c2.hitbox.Width, c2.hitbox.Height)
