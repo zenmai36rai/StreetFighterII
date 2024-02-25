@@ -361,7 +361,7 @@ Public Class Form1
                         ElseIf Rd < 10 Then
                             Button28.PerformClick()
                         End If
-                        If Rd = 6 Then
+                        If Rd = 10 Then
                             If c2.direction = DIREC_RIGHT Then
                                 Button22.PerformClick()
                             Else
@@ -386,6 +386,11 @@ Public Class Form1
                     End If
                 Case Else
             End Select
+            If c2.jump > 0 Then
+                If dist < 120 Then
+                    Button30.PerformClick()
+                End If
+            End If
         End If
     End Sub
     Private Sub HitJudge(ByVal h As Rectangle, ByVal r As Rectangle, ByRef c As clMove, ByRef cc As clMove)
@@ -486,7 +491,7 @@ Public Class Form1
         End If
     End Sub
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
-        If c1.jump = 0 Then
+        If c1.jump = 0 And c1.state = 0 Then
             c1.jump = 1
             c1.jump_time = 0
             c1.jump_vy = 0
@@ -494,7 +499,7 @@ Public Class Form1
     End Sub
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
-        If c1.jump = 0 Then
+        If c1.jump = 0 And c1.state = 0 Then
             c1.jump = 1
             c1.jump_time = 0
             c1.jump_vy = 0
@@ -503,7 +508,7 @@ Public Class Form1
     End Sub
 
     Private Sub Button9_Click(sender As Object, e As EventArgs) Handles Button9.Click
-        If c1.jump = 0 Then
+        If c1.jump = 0 And c1.state = 0 Then
             c1.jump = 1
             c1.jump_time = 0
             c1.jump_vy = 0
@@ -593,13 +598,13 @@ Public Class Form1
     End Sub
 
     Private Sub Button27_Click(sender As Object, e As EventArgs) Handles Button27.Click
-        If c2.state = 0 Then
+        If c2.state = 0 And c2.jump = 0 Then
             c2.state = 1
         End If
     End Sub
 
     Private Sub Button22_Click(sender As Object, e As EventArgs) Handles Button22.Click
-        If c2.jump = 0 Then
+        If c2.jump = 0 And c2.state = 0 Then
             c2.jump = 1
             c2.jump_time = 0
             c2.jump_vy = 0
@@ -608,7 +613,7 @@ Public Class Form1
     End Sub
 
     Private Sub Button23_Click(sender As Object, e As EventArgs) Handles Button23.Click
-        If c2.jump = 0 Then
+        If c2.jump = 0 And c2.state = 0 Then
             c2.jump = 1
             c2.jump_time = 0
             c2.jump_vy = 0
@@ -617,7 +622,7 @@ Public Class Form1
     End Sub
 
     Private Sub Button24_Click(sender As Object, e As EventArgs) Handles Button24.Click
-        If c2.jump = 0 Then
+        If c2.jump = 0 And c2.state = 0 Then
             c2.jump = 1
             c2.jump_time = 0
             c2.jump_vy = 0
