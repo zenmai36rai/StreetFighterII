@@ -7,9 +7,13 @@ Public Class Form1
     Const KOKYU_FLAG_DOWN = 1
     Const DIREC_RIGHT = 0
     Const DIREC_LEFT = 1
+    Const STATE_MAX = 10
     Private Class clMove
         Public Sub New(ByVal Direc As Integer)
             direction = Direc
+            For i = 0 To STATE_MAX - 1
+                st_dir(i) = Direc
+            Next
         End Sub
         Public Life As Integer = 100
         Public cx As Integer = 0
@@ -26,6 +30,7 @@ Public Class Form1
         Public sonic_r As Integer = 0
         Public sonic_v As Integer = 1
         Public state As Integer = 0
+        Public st_dir(STATE_MAX) As Integer
         Public next_state As Integer = 0
         Public state_time As Integer = 0
         Public tech_flag As Integer = 0
@@ -73,6 +78,7 @@ Public Class Form1
     Dim img_back As Image = Image.FromFile("..\..\アニメ素材\背景.png")
     Dim img_gara As Image = Image.FromFile("..\..\アニメ素材\観客背景.png")
     Dim img_audi As Image = Image.FromFile("..\..\アニメ素材\観客手前.png")
+
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         frame = frame + 1
         If frame Mod 100 = 0 Then
@@ -150,13 +156,13 @@ Public Class Form1
                 c1.tech_flag = 0
         End Select
         If 400 + c2.cx < c1.cx Then
-            If c1.direction = DIREC_RIGHT Then
-                c1.direction = DIREC_LEFT
+            If c1.st_dir(c1.state) = DIREC_RIGHT Then
+                c1.st_dir(c1.state) = DIREC_LEFT
                 img.RotateFlip(RotateFlipType.Rotate180FlipY)
             End If
         Else
-            If c1.direction = DIREC_LEFT Then
-                c1.direction = DIREC_RIGHT
+            If c1.st_dir(c1.state) = DIREC_LEFT Then
+                c1.st_dir(c1.state) = DIREC_RIGHT
                 img.RotateFlip(RotateFlipType.Rotate180FlipY)
             End If
         End If
@@ -179,7 +185,7 @@ Public Class Form1
         End If
         Select Case c2.state
             Case 0
-                img = img_r0_1
+                img = img_r1
                 c2.hitbox = New Rectangle(0, 0, 0, 0)
             Case 1
                 img = img_r2
@@ -213,17 +219,25 @@ Public Class Form1
                 c2.hitbox = New Rectangle(100, 70, 100, 100)
                 c2.damage = 14
             Case Else
-                img = img_r0_1
+                img = img_r1
                 c2.tech_flag = 0
         End Select
         If 400 + c2.cx > c1.cx Then
-            If c2.direction = DIREC_RIGHT Then
+            If c2.st_dir(c2.state) = DIREC_RIGHT Then
                 c2.direction = DIREC_LEFT
+                c2.st_dir(c2.state) = DIREC_LEFT
+                If c2.state = 2 Then
+                    img_hadou.RotateFlip(RotateFlipType.Rotate180FlipY)
+                End If
                 img.RotateFlip(RotateFlipType.Rotate180FlipY)
             End If
         Else
-            If c2.direction = DIREC_LEFT Then
+            If c2.st_dir(c2.state) = DIREC_LEFT Then
                 c2.direction = DIREC_RIGHT
+                c2.st_dir(c2.state) = DIREC_RIGHT
+                If c2.state = 2 Then
+                    img_hadou.RotateFlip(RotateFlipType.Rotate180FlipY)
+                End If
                 img.RotateFlip(RotateFlipType.Rotate180FlipY)
             End If
         End If
@@ -256,27 +270,29 @@ Public Class Form1
             End If
         ElseIf c2.state = 0 Then
             g.DrawImage(img, 400 + c2.cx, 220 - c2.cy, 200, 200)
-            If c2.kokyu_ud = KOKYU_FLAG_DOWN Then
-                c2.kokyu = c2.kokyu + 1
-                If c2.kokyu = 80 Then
-                    c2.kokyu_ud = KOKYU_FLAG_UP
+            If 0 Then
+                If c2.kokyu_ud = KOKYU_FLAG_DOWN Then
+                    c2.kokyu = c2.kokyu + 1
+                    If c2.kokyu = 80 Then
+                        c2.kokyu_ud = KOKYU_FLAG_UP
+                    End If
+                Else
+                    c2.kokyu = c2.kokyu - 1
+                    If c2.kokyu = 0 Then
+                        c2.kokyu_ud = KOKYU_FLAG_DOWN
+                    End If
                 End If
-            Else
-                c2.kokyu = c2.kokyu - 1
-                If c2.kokyu = 0 Then
-                    c2.kokyu_ud = KOKYU_FLAG_DOWN
+                Dim k_x_l As Integer = 2 - Math.Abs((40 - c2.kokyu) / 20)
+                Dim k_x_r As Integer = 2 - Math.Abs((40 - c2.kokyu) / 20)
+                If c2.kokyu_ud = KOKYU_FLAG_DOWN Then
+                    k_x_r = k_x_r * -1
+                Else
+                    k_x_l = k_x_l * -1
                 End If
+                Dim k As Integer = (c2.kokyu - 60) / 10
+                g.DrawImage(img_r0_2, 400 + c2.cx + 138 + k_x_l, 220 - c2.cy + 48 + k, 38, 55)
+                g.DrawImage(img_r0_3, 400 + c2.cx + 40 + k_x_r, 220 - c2.cy + 44 + k, 44, 48)
             End If
-            Dim k_x_l As Integer = 2 - Math.Abs((40 - c2.kokyu) / 20)
-            Dim k_x_r As Integer = 2 - Math.Abs((40 - c2.kokyu) / 20)
-            If c2.kokyu_ud = KOKYU_FLAG_DOWN Then
-                k_x_r = k_x_r * -1
-            Else
-                k_x_l = k_x_l * -1
-            End If
-            Dim k As Integer = (c2.kokyu - 60) / 10
-            g.DrawImage(img_r0_2, 400 + c2.cx + 138 + k_x_l, 220 - c2.cy + 48 + k, 38, 55)
-            g.DrawImage(img_r0_3, 400 + c2.cx + 40 + k_x_r, 220 - c2.cy + 44 + k, 44, 48)
         Else
             g.DrawImage(img, 400 + c2.cx, 220 - c2.cy, 200, 200)
         End If
@@ -339,11 +355,18 @@ Public Class Form1
             Dim Rd As Integer = Rnd() * 60
             Select Case c2.state
                 Case 0
-                    If dist < 150 Then
+                    If dist <= 120 Then
                         If Rd < 5 Then
                             Button25.PerformClick()
                         ElseIf Rd < 10 Then
                             Button28.PerformClick()
+                        End If
+                        If Rd = 6 Then
+                            If c2.direction = DIREC_RIGHT Then
+                                Button22.PerformClick()
+                            Else
+                                Button24.PerformClick()
+                            End If
                         End If
                     ElseIf Rd < 2 Then
                         Button27.PerformClick()
@@ -355,12 +378,15 @@ Public Class Form1
                             Button24.PerformClick()
                         End If
                     End If
+                    If 30 < Rd And Rd <= 40 And dist > 120 Then
+                        Button19.PerformClick()
+                    End If
+                    If 40 < Rd And Rd <= 50 And dist > 120 Then
+                        Button21.PerformClick()
+                    End If
                 Case Else
-
             End Select
-
         End If
-
     End Sub
     Private Sub HitJudge(ByVal h As Rectangle, ByVal r As Rectangle, ByRef c As clMove, ByRef cc As clMove)
         If h.IntersectsWith(r) And c.hitcheck = 0 Then
@@ -567,7 +593,9 @@ Public Class Form1
     End Sub
 
     Private Sub Button27_Click(sender As Object, e As EventArgs) Handles Button27.Click
-        c2.state = 1
+        If c2.state = 0 Then
+            c2.state = 1
+        End If
     End Sub
 
     Private Sub Button22_Click(sender As Object, e As EventArgs) Handles Button22.Click
@@ -707,5 +735,13 @@ Public Class Form1
 
     Private Sub Button29_Click(sender As Object, e As EventArgs) Handles Button29.Click
         c2.state = 7
+    End Sub
+
+    Private Sub Button19_Click(sender As Object, e As EventArgs) Handles Button19.Click
+        c2.cx = c2.cx - 5
+    End Sub
+
+    Private Sub Button21_Click(sender As Object, e As EventArgs) Handles Button21.Click
+        c2.cx = c2.cx + 5
     End Sub
 End Class
