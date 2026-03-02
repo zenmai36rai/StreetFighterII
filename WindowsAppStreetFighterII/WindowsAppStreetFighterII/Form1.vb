@@ -73,6 +73,7 @@ Public Class Form1
     Dim img_r6 As Image = Image.FromFile("..\..\アニメ素材\リュウパンチ.png")
     Dim img_r7 As Image = Image.FromFile("..\..\アニメ素材\リュウキック.png")
     Dim img_r8 As Image = Image.FromFile("..\..\アニメ素材\リュウ飛び蹴り.png")
+    Dim img_r9 As Image = Image.FromFile("..\..\アニメ素材\リュウ中パンチ.png")
     Dim img_hadou As Image = Image.FromFile("..\..\アニメ素材\波動拳.png")
     Dim img_hit As Image = Image.FromFile("..\..\アニメ素材\ヒットマーク.png")
     Dim img_back As Image = Image.FromFile("..\..\アニメ素材\背景.png")
@@ -205,7 +206,7 @@ Public Class Form1
             Case 5
                 img = img_r5
             Case 6
-                img = img_r6
+                img = img_r9
                 SetNextFrame(c2, 0, 9)
                 c2.hitbox = New Rectangle(100, 0, 100, 100)
                 c2.damage = 9
