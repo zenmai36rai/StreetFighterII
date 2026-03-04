@@ -206,7 +206,7 @@ Public Class Form1
             Case 5
                 img = img_r5
             Case 6
-                img = img_r9
+                img = img_r6
                 SetNextFrame(c2, 0, 9)
                 c2.hitbox = New Rectangle(100, 0, 100, 100)
                 c2.damage = 9
@@ -219,6 +219,11 @@ Public Class Form1
                 img = img_r8
                 c2.hitbox = New Rectangle(100, 70, 100, 100)
                 c2.damage = 14
+            Case 9
+                img = img_r9
+                SetNextFrame(c2, 0, 9)
+                c2.hitbox = New Rectangle(100, 0, 100, 100)
+                c2.damage = 9
             Case Else
                 img = img_r1
                 c2.tech_flag = 0
@@ -359,6 +364,8 @@ Public Class Form1
                     If dist <= 120 Then
                         If Rd < 5 Then
                             Button25.PerformClick()
+                        ElseIf Rd < 7 Then
+                            Button26.PerformClick()
                         ElseIf Rd < 10 Then
                             Button28.PerformClick()
                         End If
@@ -736,7 +743,7 @@ Public Class Form1
     End Sub
 
     Private Sub Button26_Click(sender As Object, e As EventArgs) Handles Button26.Click
-        c2.state = 6
+        c2.state = 9
     End Sub
 
     Private Sub Button29_Click(sender As Object, e As EventArgs) Handles Button29.Click
