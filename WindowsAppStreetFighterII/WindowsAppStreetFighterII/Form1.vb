@@ -8,6 +8,22 @@ Public Class Form1
     Const DIREC_RIGHT = 0
     Const DIREC_LEFT = 1
     Const STATE_MAX = 10
+
+    Const PLAYER_1 = 1
+    Const PLAYER_2 = 2
+
+    Const BTN_NEWTRAL = 0
+    Const BTN_UP = 1
+    Const BTN_DOWN = 2
+    Const BTN_LEFT = 4
+    Const BTN_RIGHT = 8
+    Const BTN_LP = 16
+    Const BTN_MP = 32
+    Const BTN_HP = 64
+    Const BTN_LK = 128
+    Const BTN_MK = 256
+    Const BTN_HK = 512
+
     Private Class clMove
         Public Sub New(ByVal Direc As Integer)
             direction = Direc
@@ -592,69 +608,48 @@ Public Class Form1
     End Sub
 
     Private Sub Button21_MouseDown(sender As Object, e As EventArgs) Handles Button21.MouseDown
-        c2.walk_vx = 5
+        InputCommand(PLAYER_2, BTN_RIGHT)
     End Sub
 
     Private Sub Button19_MouseDown(sender As Object, e As EventArgs) Handles Button19.MouseDown
-        c2.walk_vx = -5
+        InputCommand(PLAYER_2, BTN_LEFT)
     End Sub
     Private Sub Button21_MouseUp(sender As Object, e As MouseEventArgs) Handles Button21.MouseUp
-        c2.walk_vx = 0
+        InputCommand(PLAYER_2, BTN_NEWTRAL)
     End Sub
     Private Sub Button19_MouseUp(sender As Object, e As MouseEventArgs) Handles Button19.MouseUp
-        c2.walk_vx = 0
+        InputCommand(PLAYER_2, BTN_NEWTRAL)
     End Sub
 
     Private Sub Button27_Click(sender As Object, e As EventArgs) Handles Button27.Click
-        If c2.state = 0 And c2.jump = 0 Then
-            c2.state = 1
-        End If
+        InputCommand(PLAYER_2, BTN_HP)
     End Sub
 
     Private Sub Button22_Click(sender As Object, e As EventArgs) Handles Button22.Click
-        If c2.jump = 0 And c2.state = 0 Then
-            c2.jump = 1
-            c2.jump_time = 0
-            c2.jump_vy = 0
-            c2.jump_vx = -5
-        End If
+        InputCommand(PLAYER_2, (BTN_UP + BTN_LEFT))
     End Sub
 
     Private Sub Button23_Click(sender As Object, e As EventArgs) Handles Button23.Click
-        If c2.jump = 0 And c2.state = 0 Then
-            c2.jump = 1
-            c2.jump_time = 0
-            c2.jump_vy = 0
-        End If
-
+        InputCommand(PLAYER_2, BTN_UP)
     End Sub
 
     Private Sub Button24_Click(sender As Object, e As EventArgs) Handles Button24.Click
-        If c2.jump = 0 And c2.state = 0 Then
-            c2.jump = 1
-            c2.jump_time = 0
-            c2.jump_vy = 0
-            c2.jump_vx = 5
-        End If
+        InputCommand(PLAYER_2, (BTN_UP + BTN_RIGHT))
     End Sub
 
     Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
     End Sub
 
     Private Sub Button30_Click(sender As Object, e As EventArgs) Handles Button30.Click
-        If c2.state = 8 Then
-            c2.state = 0
-        Else
-            c2.state = 8
-        End If
+        InputCommand(PLAYER_2, BTN_HK)
     End Sub
 
     Private Sub Button25_Click(sender As Object, e As EventArgs) Handles Button25.Click
-        c2.state = 6
+        InputCommand(PLAYER_2, BTN_LP)
     End Sub
 
     Private Sub Button28_Click(sender As Object, e As EventArgs) Handles Button28.Click
-        c2.state = 7
+        InputCommand(PLAYER_2, BTN_LK)
     End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.KeyPreview = True
@@ -743,18 +738,81 @@ Public Class Form1
     End Sub
 
     Private Sub Button26_Click(sender As Object, e As EventArgs) Handles Button26.Click
-        c2.state = 9
+        InputCommand(PLAYER_2, BTN_MP)
     End Sub
 
     Private Sub Button29_Click(sender As Object, e As EventArgs) Handles Button29.Click
-        c2.state = 7
+        InputCommand(PLAYER_2, BTN_MK)
     End Sub
 
     Private Sub Button19_Click(sender As Object, e As EventArgs) Handles Button19.Click
-        c2.cx = c2.cx - 5
+        InputCommand(PLAYER_2, BTN_LEFT)
     End Sub
 
     Private Sub Button21_Click(sender As Object, e As EventArgs) Handles Button21.Click
-        c2.cx = c2.cx + 5
+        InputCommand(PLAYER_2, BTN_RIGHT)
+    End Sub
+
+    Private Sub MoveChar(ByVal ch As Integer, ByVal btn As Integer)
+        If ch = PLAYER_2 Then
+            Select Case btn
+                Case BTN_NEWTRAL
+                    c2.state = 0
+                    c2.walk_vx = 0
+                Case BTN_LEFT
+                    c2.cx = c2.cx - 5
+                Case BTN_RIGHT
+                    c2.cx = c2.cx + 5
+                Case BTN_UP
+                    If c2.jump = 0 And c2.state = 0 Then
+                        c2.jump = 1
+                        c2.jump_time = 0
+                        c2.jump_vy = 0
+                    End If
+                Case (BTN_UP + BTN_LEFT)
+                    If c2.jump = 0 And c2.state = 0 Then
+                        c2.jump = 1
+                        c2.jump_time = 0
+                        c2.jump_vy = 0
+                        c2.jump_vx = -5
+                    End If
+                Case (BTN_UP + BTN_RIGHT)
+                    If c2.jump = 0 And c2.state = 0 Then
+                        c2.jump = 1
+                        c2.jump_time = 0
+                        c2.jump_vy = 0
+                        c2.jump_vx = 5
+                    End If
+                    InputCommand(PLAYER_2, BTN_LP)
+                Case BTN_LP
+                    c2.state = 6
+                Case BTN_MP
+                    c2.state = 9
+                Case BTN_HP
+                    If c2.state = 0 And c2.jump = 0 Then
+                        c2.state = 1
+                    End If
+                Case BTN_LK
+                    c2.state = 7
+                Case BTN_MK
+                    c2.state = 7
+                Case BTN_HK
+                    c2.state = 8
+            End Select
+        End If
+    End Sub
+
+    Private Sub StateChange(ByVal target As Integer, ByVal new_state As Integer)
+        If target = 1 Then
+            c1.state = new_state
+        End If
+        If target = 2 Then
+            c2.state = new_state
+        End If
+    End Sub
+
+    Private Sub InputCommand(ByVal ch As Integer, ByVal btn As Integer)
+        MoveChar(ch, btn)
+        MoveChar(ch, btn)
     End Sub
 End Class
