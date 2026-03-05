@@ -7,7 +7,7 @@ Public Class Form1
     Const KOKYU_FLAG_DOWN = 1
     Const DIREC_RIGHT = 0
     Const DIREC_LEFT = 1
-    Const STATE_MAX = 10
+    Const STATE_MAX = 11
 
     Const PLAYER_1 = 1
     Const PLAYER_2 = 2
@@ -90,6 +90,7 @@ Public Class Form1
     Dim img_r7 As Image = Image.FromFile("..\..\アニメ素材\リュウキック.png")
     Dim img_r8 As Image = Image.FromFile("..\..\アニメ素材\リュウ飛び蹴り.png")
     Dim img_r9 As Image = Image.FromFile("..\..\アニメ素材\リュウ中パンチ.png")
+    Dim img_r10 As Image = Image.FromFile("..\..\アニメ素材\リュウやられ.png")
     Dim img_hadou As Image = Image.FromFile("..\..\アニメ素材\波動拳.png")
     Dim img_hit As Image = Image.FromFile("..\..\アニメ素材\ヒットマーク.png")
     Dim img_back As Image = Image.FromFile("..\..\アニメ素材\背景.png")
@@ -240,6 +241,9 @@ Public Class Form1
                 SetNextFrame(c2, 0, 9)
                 c2.hitbox = New Rectangle(100, 0, 100, 100)
                 c2.damage = 9
+            Case 10
+                img = img_r10
+                SetNextFrame(c2, 0, 10)
             Case Else
                 img = img_r1
                 c2.tech_flag = 0
@@ -356,6 +360,7 @@ Public Class Form1
         TextBox1.Text = c1.Life
         TextBox2.Text = c2.Life
         If c2.damagebuff > 0 Or c2.guardbuff > 0 Then
+            StateChange(PLAYER_2, 10)
             g.DrawImage(img_hit, c1.hitmark.X, c1.hitmark.Y, 200, 200)
         End If
         If c1.damagebuff > 0 Or c1.guardbuff > 0 Then
