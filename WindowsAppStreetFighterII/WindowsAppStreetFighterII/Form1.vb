@@ -204,7 +204,7 @@ Public Class Form1
         End If
         Select Case c2.state
             Case 0
-                If frame Mod 15 = 0 Then
+                If frame Mod 30 < 15 Then
                     img = img_r1
                 Else
                     img = img_r11
