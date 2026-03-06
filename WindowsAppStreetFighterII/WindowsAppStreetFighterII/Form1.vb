@@ -7,7 +7,7 @@ Public Class Form1
     Const KOKYU_FLAG_DOWN = 1
     Const DIREC_RIGHT = 0
     Const DIREC_LEFT = 1
-    Const STATE_MAX = 11
+    Const STATE_MAX = 12
 
     Const PLAYER_1 = 1
     Const PLAYER_2 = 2
@@ -91,6 +91,7 @@ Public Class Form1
     Dim img_r8 As Image = Image.FromFile("..\..\アニメ素材\リュウ飛び蹴り.png")
     Dim img_r9 As Image = Image.FromFile("..\..\アニメ素材\リュウ中パンチ.png")
     Dim img_r10 As Image = Image.FromFile("..\..\アニメ素材\リュウやられ.png")
+    Dim img_r11 As Image = Image.FromFile("..\..\アニメ素材\リュウ立ち2.png")
     Dim img_hadou As Image = Image.FromFile("..\..\アニメ素材\波動拳.png")
     Dim img_hit As Image = Image.FromFile("..\..\アニメ素材\ヒットマーク.png")
     Dim img_back As Image = Image.FromFile("..\..\アニメ素材\背景.png")
@@ -203,7 +204,11 @@ Public Class Form1
         End If
         Select Case c2.state
             Case 0
-                img = img_r1
+                If frame Mod 30 = 0 Then
+                    img = img_r1
+                Else
+                    img = img_r11
+                End If
                 c2.hitbox = New Rectangle(0, 0, 0, 0)
             Case 1
                 img = img_r2
