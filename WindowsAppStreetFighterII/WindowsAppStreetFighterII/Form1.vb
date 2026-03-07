@@ -77,6 +77,7 @@ Public Class Form1
     Dim img_4 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風ソニックブーム.png")
     Dim img_5 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風ガード.png")
     Dim img_6 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風しゃがみ.png")
+    Dim img_7 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風サマーソルトキック.png")
     Dim img_sonic As Image = Image.FromFile("..\..\アニメ素材\ソニックブーム.png")
     Dim img_sonic2 As Image = Image.FromFile("..\..\アニメ素材\ソニックブーム２.png")
     Dim img_r0_1 As Image = Image.FromFile("..\..\アニメ素材\リュウ立ち\1.png")
@@ -173,6 +174,9 @@ Public Class Form1
                 img = img_5
             Case 6
                 img = img_6
+            Case 7
+                img = img_7
+                SetNextFrame(c1, 0, 36)
             Case Else
                 img = img_0
                 c1.tech_flag = 0
@@ -799,7 +803,7 @@ Public Class Form1
                 Case BTN_MK
                     c1.state = 2
                 Case BTN_HK
-                    c1.state = 2
+                    c1.state = 7
             End Select
         End If
         If ch = PLAYER_2 Then
