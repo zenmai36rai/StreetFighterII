@@ -78,6 +78,7 @@ Public Class Form1
     Dim img_5 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風ガード.png")
     Dim img_6 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風しゃがみ.png")
     Dim img_7 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風サマーソルトキック.png")
+    Dim img_8 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風中足払い.png")
     Dim img_sonic As Image = Image.FromFile("..\..\アニメ素材\ソニックブーム.png")
     Dim img_sonic2 As Image = Image.FromFile("..\..\アニメ素材\ソニックブーム２.png")
     Dim img_r0_1 As Image = Image.FromFile("..\..\アニメ素材\リュウ立ち\1.png")
@@ -193,6 +194,11 @@ Public Class Form1
                 img = img_6
                 c1.cy = c1.cy - 100
                 StateChange(PLAYER_1, 6)
+            Case 10
+                img = img_8
+                SetNextFrame(c1, 0, 18)
+                c1.hitbox = New Rectangle(0, 150, 200, 50)
+                c1.damage = 15
             Case Else
                 img = img_0
                 c1.tech_flag = 0
@@ -817,7 +823,7 @@ Public Class Form1
                 Case BTN_LK
                     c1.state = 2
                 Case BTN_MK
-                    c1.state = 2
+                    c1.state = 10
                 Case BTN_HK
                     If (c1.state = 0 Or c1.state = 6) And c1.jump = 0 Then
                         c1.state = 7
