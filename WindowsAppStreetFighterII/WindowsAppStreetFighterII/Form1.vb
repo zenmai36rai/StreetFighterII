@@ -76,6 +76,7 @@ Public Class Form1
     Dim img_3 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風構え.png")
     Dim img_4 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風ソニックブーム.png")
     Dim img_5 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風ガード.png")
+    Dim img_6 As Image = Image.FromFile("..\..\アニメ素材\ガイル絵本風しゃがみ.png")
     Dim img_sonic As Image = Image.FromFile("..\..\アニメ素材\ソニックブーム.png")
     Dim img_sonic2 As Image = Image.FromFile("..\..\アニメ素材\ソニックブーム２.png")
     Dim img_r0_1 As Image = Image.FromFile("..\..\アニメ素材\リュウ立ち\1.png")
@@ -170,6 +171,8 @@ Public Class Form1
                 SetNextFrame(c1, 0, 36)
             Case 5
                 img = img_5
+            Case 6
+                img = img_6
             Case Else
                 img = img_0
                 c1.tech_flag = 0
@@ -525,54 +528,40 @@ Public Class Form1
         End If
     End Sub
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
-        If c1.jump = 0 And c1.state = 0 Then
-            c1.jump = 1
-            c1.jump_time = 0
-            c1.jump_vy = 0
-        End If
+        InputCommand(PLAYER_1, BTN_UP)
     End Sub
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
-        If c1.jump = 0 And c1.state = 0 Then
-            c1.jump = 1
-            c1.jump_time = 0
-            c1.jump_vy = 0
-            c1.jump_vx = -5
-        End If
+        InputCommand(PLAYER_1, BTN_LEFT + BTN_UP)
     End Sub
 
     Private Sub Button9_Click(sender As Object, e As EventArgs) Handles Button9.Click
-        If c1.jump = 0 And c1.state = 0 Then
-            c1.jump = 1
-            c1.jump_time = 0
-            c1.jump_vy = 0
-            c1.jump_vx = 5
-        End If
+        InputCommand(PLAYER_1, BTN_UP + BTN_RIGHT)
     End Sub
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
-        c1.state = 5
+        StateChange(PLAYER_1, 5)
     End Sub
 
     Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
-        c1.state = 1
+        InputCommand(PLAYER_1, BTN_LP)
     End Sub
 
     Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click
-        c1.state = 1
+        InputCommand(PLAYER_1, BTN_MP)
     End Sub
 
     Private Sub Button12_Click(sender As Object, e As EventArgs) Handles Button12.Click
-        c1.state = 3
+        InputCommand(PLAYER_1, BTN_HP)
     End Sub
 
     Private Sub Button13_Click(sender As Object, e As EventArgs) Handles Button13.Click
-        c1.state = 2
+        InputCommand(PLAYER_1, BTN_LK)
     End Sub
     Private Sub Button14_Click(sender As Object, e As EventArgs) Handles Button14.Click
-        c1.state = 2
+        InputCommand(PLAYER_1, BTN_MK)
     End Sub
     Private Sub Button15_Click(sender As Object, e As EventArgs) Handles Button15.Click
-        c1.state = 2
+        InputCommand(PLAYER_1, BTN_HK)
     End Sub
     Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
         Dim t As String = TextBox1.Text.ToString
@@ -605,16 +594,16 @@ Public Class Form1
     End Sub
 
     Private Sub Button6_MouseDown(sender As Object, e As MouseEventArgs) Handles Button6.MouseDown
-        c1.walk_vx = 5
+        InputCommand(PLAYER_1, BTN_RIGHT)
     End Sub
     Private Sub Button4_MouseDown(sender As Object, e As MouseEventArgs) Handles Button4.MouseDown
-        c1.walk_vx = -5
+        InputCommand(PLAYER_1, BTN_LEFT)
     End Sub
     Private Sub Button6_MouseUp(sender As Object, e As MouseEventArgs) Handles Button6.MouseUp
-        c1.walk_vx = 0
+        InputCommand(PLAYER_1, BTN_NEWTRAL)
     End Sub
     Private Sub Button4_MouseUp(sender As Object, e As MouseEventArgs) Handles Button4.MouseUp
-        c1.walk_vx = 0
+        InputCommand(PLAYER_1, BTN_NEWTRAL)
     End Sub
 
     Private Sub Button21_MouseDown(sender As Object, e As EventArgs) Handles Button21.MouseDown
@@ -667,6 +656,8 @@ Public Class Form1
     End Sub
     Private Sub Form1_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
         Select Case e.KeyCode
+            Case Keys.X
+                Button2.PerformClick()
             Case Keys.Q
                 Button7.PerformClick()
             Case Keys.W
@@ -764,6 +755,53 @@ Public Class Form1
     End Sub
 
     Private Sub MoveChar(ByVal ch As Integer, ByVal btn As Integer)
+        If ch = PLAYER_1 Then
+            Select Case btn
+                Case BTN_NEWTRAL
+                    c1.state = 0
+                    c1.walk_vx = 0
+                Case BTN_LEFT
+                    c1.cx = c1.cx - 5
+                Case BTN_RIGHT
+                    c1.cx = c1.cx + 5
+                Case BTN_UP
+                    If c1.jump = 0 And c1.state = 0 Then
+                        c1.jump = 1
+                        c1.jump_time = 0
+                        c1.jump_vy = 0
+                    End If
+                Case (BTN_UP + BTN_LEFT)
+                    If c1.jump = 0 And c1.state = 0 Then
+                        c1.jump = 1
+                        c1.jump_time = 0
+                        c1.jump_vy = 0
+                        c1.jump_vx = -5
+                    End If
+                Case (BTN_UP + BTN_RIGHT)
+                    If c1.jump = 0 And c1.state = 0 Then
+                        c1.jump = 1
+                        c1.jump_time = 0
+                        c1.jump_vy = 0
+                        c1.jump_vx = 5
+                    End If
+                Case BTN_DOWN
+                    c1.state = 6
+                Case BTN_LP
+                    c1.state = 1
+                Case BTN_MP
+                    c1.state = 1
+                Case BTN_HP
+                    If c1.state = 0 And c1.jump = 0 Then
+                        c1.state = 3
+                    End If
+                Case BTN_LK
+                    c1.state = 2
+                Case BTN_MK
+                    c1.state = 2
+                Case BTN_HK
+                    c1.state = 2
+            End Select
+        End If
         If ch = PLAYER_2 Then
             Select Case btn
                 Case BTN_NEWTRAL
@@ -793,7 +831,6 @@ Public Class Form1
                         c2.jump_vy = 0
                         c2.jump_vx = 5
                     End If
-                    InputCommand(PLAYER_2, BTN_LP)
                 Case BTN_LP
                     c2.state = 6
                 Case BTN_MP
@@ -824,6 +861,18 @@ Public Class Form1
     Private Sub InputCommand(ByVal ch As Integer, ByVal btn As Integer)
         MoveChar(ch, btn)
         MoveChar(ch, btn)
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        InputCommand(PLAYER_1, BTN_DOWN)
+    End Sub
+
+    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
+        InputCommand(PLAYER_1, BTN_RIGHT)
+    End Sub
+
+    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        InputCommand(PLAYER_1, BTN_LEFT)
     End Sub
 End Class
 '                                                                                              Cpyright 2026 Kyosuke Miyazawa
