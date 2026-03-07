@@ -233,11 +233,7 @@ Public Class Form1
         End If
         Select Case c2.state
             Case 0
-                If frame Mod 30 < 15 Then
-                    img = img_r1
-                Else
-                    img = img_r11
-                End If
+                img = img_r1
                 c2.hitbox = New Rectangle(0, 0, 0, 0)
             Case 1
                 img = img_r2
