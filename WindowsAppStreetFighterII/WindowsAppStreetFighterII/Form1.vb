@@ -174,9 +174,25 @@ Public Class Form1
                 img = img_5
             Case 6
                 img = img_6
+                c1.hitbox = New Rectangle(0, 0, 0, 0)
             Case 7
                 img = img_7
-                SetNextFrame(c1, 0, 36)
+                If c1.st_dir(c1.state) = DIREC_RIGHT Then
+                    c1.cx = c1.cx + 100
+                Else
+                    c1.cx = c1.cx - 100
+                End If
+                c1.cy = c1.cy + 100
+                SetNextFrame(c1, 8, 1)
+            Case 8
+                img = img_7
+                c1.hitbox = New Rectangle(0, 0, 200, 200)
+                c1.damage = 20
+                SetNextFrame(c1, 9, 20)
+            Case 9
+                img = img_6
+                c1.cy = c1.cy - 100
+                StateChange(PLAYER_1, 6)
             Case Else
                 img = img_0
                 c1.tech_flag = 0
@@ -795,7 +811,7 @@ Public Class Form1
                 Case BTN_MP
                     c1.state = 1
                 Case BTN_HP
-                    If c1.state = 0 And c1.jump = 0 Then
+                    If (c1.state = 0 Or c1.state = 6) And c1.jump = 0 Then
                         c1.state = 3
                     End If
                 Case BTN_LK
@@ -803,7 +819,9 @@ Public Class Form1
                 Case BTN_MK
                     c1.state = 2
                 Case BTN_HK
-                    c1.state = 7
+                    If (c1.state = 0 Or c1.state = 6) And c1.jump = 0 Then
+                        c1.state = 7
+                    End If
             End Select
         End If
         If ch = PLAYER_2 Then
