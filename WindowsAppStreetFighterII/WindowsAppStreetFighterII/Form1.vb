@@ -744,7 +744,7 @@ Public Class Form1
     End Sub
 
     Private Sub Button20_Click(sender As Object, e As EventArgs) Handles Button20.Click
-        c2.state = 5
+        StateChange(PLAYER_2, 5)
     End Sub
 
     Private Sub Button26_Click(sender As Object, e As EventArgs) Handles Button26.Click
@@ -826,3 +826,4 @@ Public Class Form1
         MoveChar(ch, btn)
     End Sub
 End Class
+'                                                                                              Cpyright 2026 Kyosuke Miyazawa
