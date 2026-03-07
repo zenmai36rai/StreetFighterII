@@ -186,9 +186,9 @@ Public Class Form1
                 SetNextFrame(c1, 8, 1)
             Case 8
                 img = img_7
+                SetNextFrame(c1, 9, 20)
                 c1.hitbox = New Rectangle(0, 0, 200, 200)
                 c1.damage = 20
-                SetNextFrame(c1, 9, 20)
             Case 9
                 img = img_6
                 c1.cy = c1.cy - 100
